@@ -17,7 +17,7 @@ function App() {
   return (
     <div className="app-container">
       <Analytics />
-      <Navbar openFunc={handleOpen} />
+      <Navbar open={hamburger} setOpen={handleOpen} />
       <Hidden isOpen={hamburger} onNavigate={() => setHamburger(false)} />
       <ScrollToTop />
       <AppRoutes />

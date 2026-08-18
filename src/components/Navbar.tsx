@@ -13,18 +13,13 @@ interface Logo {
   link: string;
 }
 
-function Navbar({ openFunc }: { openFunc: (state: boolean) => void }) {
+function Navbar({ open, setOpen }: { open: boolean; setOpen: (state: boolean) => void }) {
   const user = useSelector((state: { user: { id?: string } }) => state.user);
-  const [isOpen, setOpen] = useState(false);
   const [logo, setLogo] = useState<Logo>({ link: defaultLogo });
   const [newLogo, setNewLogo] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [estado, setEstado] = useState(false);
   const imgUpdater = useRef<HTMLInputElement | null>(null);
-
-useEffect(() => {
-    openFunc(isOpen);
-  }, [isOpen]);
 
   useEffect(() => {
     const getLogo = async () => {
@@ -99,7 +94,7 @@ useEffect(() => {
         <Link to="/location">Location</Link>
       </ul>
       <div className="hamburger">
-        <Hamburger toggled={isOpen} toggle={setOpen} />
+        <Hamburger toggled={open} toggle={setOpen} />
       </div>
       <input
         ref={imgUpdater}

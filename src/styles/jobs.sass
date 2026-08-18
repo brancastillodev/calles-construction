@@ -5,6 +5,8 @@
   align-items: center
   text-align: center
   padding-bottom: 1rem
+  > button
+    margin-top: 2.5rem
 
 //LA PRIMERA IMAGEN AL PRINCIPIO 
 .jobs-img
@@ -14,6 +16,7 @@
 
 //APARTADO DE PARRAFO
 .text-compo
+  margin-bottom: -1rem
   h3
     font-size: 1.7rem
     color: #0f4c61
@@ -28,6 +31,7 @@
   grid-auto-rows: repeat(2, 1fr)
   width: 70%
   height: 100px
+  margin-bottom: 2rem
   a
     border: 1px solid #314044
     display: flex
@@ -149,6 +153,10 @@
     display: flex
     flex-direction: column
     gap: 1rem
+    button
+      width: fit-content
+      align-self: center
+      padding: 0.6rem 2rem
     .field
       label
         text-align: left
@@ -185,6 +193,7 @@
 .category-title
   font-size: 1.4rem
   margin-bottom: -0.4rem
+  margin-top: 2rem
 
 
 @media (min-width: 800px)
@@ -194,11 +203,14 @@
     gap: 1.5rem
     padding-bottom: 1rem
     padding-top: 1rem
+    > button
+      margin-top: 0
   .jobs-img
     width: 100%
   .jobs-compo h3
       font-size: 2.2rem
   .text-compo
+    margin-bottom: 0
     h3
       font-size: 2rem
     p
@@ -220,6 +232,7 @@
     flex-direction: row-reverse
   .botonera
     width: 55vw
+    margin-bottom: 0
   
   .rubro-title
     // margin: -1rem 0
@@ -243,6 +256,14 @@
   .category-title
     font-size: 1.6rem
     margin-bottom: -1rem
+    margin-top: 0
+
+
+@media (min-width: 900px) and (max-width: 999px)
+  .jobs-img
+    width: 60vw
+  .job-card
+    width: 70vw
 
 
 @media (min-width: 1000px)
@@ -289,7 +310,7 @@
     height: 2.2rem
   .form-job
     form
-      width: 40vw
+      width: 32vw
       .field 
         label
           font-size: 1.4rem
@@ -307,5 +328,5 @@
       width: 50vw
   .form-job
     form
-      width: 50vw
+      width: 42vw
  
