@@ -1,13 +1,27 @@
 import { Link } from "react-router-dom";
 
-function Hidden({ isOpen }: { isOpen: boolean }) {
+function Hidden({
+  isOpen,
+  onNavigate,
+}: {
+  isOpen: boolean;
+  onNavigate: () => void;
+}) {
   return (
     <div>
       <ul className={`nav-links ${isOpen ? "open" : ""}`}>
-        <Link to="/services">Services</Link>
-        <Link to="/jobs">Jobs</Link>
-        <Link to="/gallery">Gallery</Link>
-        <Link to="/location">Location</Link>
+        <Link to="/services" onClick={onNavigate}>
+          Services
+        </Link>
+        <Link to="/jobs" onClick={onNavigate}>
+          Jobs
+        </Link>
+        <Link to="/gallery" onClick={onNavigate}>
+          Gallery
+        </Link>
+        <Link to="/location" onClick={onNavigate}>
+          Location
+        </Link>
       </ul>
     </div>
   );

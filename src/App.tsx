@@ -5,7 +5,7 @@ import Hidden from "./components/Hidden";
 import Footer from "./components/Footer";
 import AppRoutes from "./components/AppRoutes";
 import ScrollToTop from "./components/ScrollToTop";
-import "./styles/app.css";
+import "./styles/app.sass";
 
 function App() {
   const [hamburger, setHamburger] = useState(false);
@@ -18,7 +18,7 @@ function App() {
     <div className="app-container">
       <Analytics />
       <Navbar openFunc={handleOpen} />
-      <Hidden isOpen={hamburger} />
+      <Hidden isOpen={hamburger} onNavigate={() => setHamburger(false)} />
       <ScrollToTop />
       <AppRoutes />
       <Footer />

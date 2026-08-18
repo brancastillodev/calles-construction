@@ -9,7 +9,7 @@
 //LA PRIMERA IMAGEN AL PRINCIPIO 
 .jobs-img
   img
-    border-radius: 15px
+    border-radius: 6px
     object-fit: cover
 
 //APARTADO DE PARRAFO
@@ -195,8 +195,7 @@
     padding-bottom: 1rem
     padding-top: 1rem
   .jobs-img
-    aspect-ratio: 16 / 9
-    overflow: hidden
+    width: 100%
   .jobs-compo h3
       font-size: 2.2rem
   .text-compo
@@ -256,7 +255,7 @@
     h2
       margin-bottom: -1rem
   .botonera
-    width: 45vw
+    width: 40vw
   .l
     text-align: left
     justify-content: left
@@ -265,11 +264,9 @@
     justify-content: right
     flex-direction: row
   .jobs-img
-    aspect-ratio: 16 / 9
-    width: 55vw
-    overflow: hidden
+    width: 33vw
   .job-card
-    width: 55vw
+    width: 40vw
     gap: 0.4rem
     section
       p
@@ -279,6 +276,7 @@
       font-size: 2.2rem
     p
       font-size: 1.3rem
+      width: 40vw
   .job-card
     h3
       font-size: 2.2rem
@@ -297,4 +295,17 @@
           font-size: 1.4rem
         input, textarea
           font-size: 1rem
+
+
+@media (min-width: 1000px) and (max-width: 1600px)
+  .botonera
+    width: 50vw
+  .job-card
+    width: 50vw
+  .text-compo
+    p
+      width: 50vw
+  .form-job
+    form
+      width: 50vw
  

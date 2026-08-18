@@ -27,3 +27,6 @@ dist-ssr
 
 css_rules.txt
 notas.txt
+# Compiled css (Vite compiles .sass directly)
+app.css
+app.css.map
