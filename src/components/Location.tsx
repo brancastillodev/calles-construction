@@ -8,18 +8,17 @@ function Location() {
       <figure className="map-image">
         <img src={calles} alt="calle-location" />
       </figure>
-      <p>
-        <i>Orchard Dr, Clifton, New Jersey </i>
-      </p>
-      <figure className="google-maps">
-        <a
-          href="https://maps.app.goo.gl/tHyUwPbXhedwkKnK7"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+      <a
+        className="maps-link"
+        href="https://maps.app.goo.gl/tHyUwPbXhedwkKnK7"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <span className="maps-text">Orchard Dr, Clifton, New Jersey</span>
+        <figure className="google-maps">
           <img src={map} alt="google-maps" />
-        </a>
-      </figure>
+        </figure>
+      </a>
     </section>
   );
 }
