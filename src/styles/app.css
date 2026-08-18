@@ -8,7 +8,7 @@
   src: url("../assets/OpenSans.ttf");
 }
 nav {
-  background-color: #fdfbf8;
+  background-color: #faf7f0;
   padding: 0.2rem 0.5rem;
   display: flex;
   justify-content: space-between;
@@ -1014,6 +1014,40 @@ img {
     background-color: #f0e8d9;
     padding: 0rem;
   }
+}
+
+.admin-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  padding-top: 2rem;
+  text-align: center;
+}
+
+.admin-panel__user {
+  font-weight: 700;
+}
+
+.admin-panel__links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.admin-panel__links .button {
+  min-width: 12rem;
+  padding: 0.7rem 1.5rem;
+  background-color: black;
+  color: white;
+  font-weight: 800;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.admin-panel__links .button:hover {
+  color: orange;
 }
 
 /*# sourceMappingURL=app.css.map */

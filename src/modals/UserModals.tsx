@@ -1,8 +1,14 @@
-import React from "react";
 import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
 
-function UserModals({ isOpen, onClose, onConfirm, text }) {
+interface UserModalsProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+  text: string;
+}
+
+function UserModals({ isOpen, onClose, onConfirm, text }: UserModalsProps) {
   return (
     <Modal
       open={isOpen}

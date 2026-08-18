@@ -11,7 +11,19 @@ import carpentryPic from "../assets/carp-logo.svg";
 import plumbingPic from "../assets/plumbingLogo.svg";
 import utilitysPic from "../assets/utilitysLogo.svg";
 
-export const services = [
+interface ServiceItem {
+  id: number;
+  title: string;
+  desc: string;
+  logo: string;
+  description: string;
+  image: string;
+  side: string;
+  date: string;
+  category: string;
+}
+
+export const services: ServiceItem[] = [
   {
     id: 3,
     title: "Drywall",
@@ -25,17 +37,19 @@ export const services = [
     category: "drywall",
   },
   {
+    id: 4,
     title: "Electrical",
     desc: "House electrical installation: wiring and fixture setup.",
     logo: electricalLogo,
     description:
-      "We install, maintain, and repair electrical systems, ensuring safe and efficient power distribution in residential and commercial settings.", //poner buildings?
+      "We install, maintain, and repair electrical systems, ensuring safe and efficient power distribution in residential and commercial settings.",
     image: electricalPic,
     side: "r",
     date: "1999-12-22T00:00:9999",
     category: "electrical",
   },
   {
+    id: 5,
     title: "Painting",
     desc: "Professional painting for homes, spaces, or businesses.",
     logo: paintingLogo,
@@ -47,6 +61,7 @@ export const services = [
     category: "painting",
   },
   {
+    id: 6,
     title: "Carpentry",
     desc: "Carpenter specializing in custom woodwork and renovations.",
     logo: carpentryLogo,
@@ -58,6 +73,7 @@ export const services = [
     category: "carpentry",
   },
   {
+    id: 7,
     title: "Plumbing",
     desc: "Installation and maintenance of plumbing and water systems.",
     logo: plumbingLogo,
@@ -69,6 +85,7 @@ export const services = [
     category: "plumbing",
   },
   {
+    id: 8,
     title: "Utilities",
     desc: "Common premises maintenance and repairs.",
     logo: utilitysLogo,

@@ -4,15 +4,15 @@ import { useSelector } from "react-redux";
 
 function Home() {
   const navigate = useNavigate();
-  const user = useSelector((state) => state.user);
+  const user = useSelector((state: { user: { id?: string } }) => state.user);
 
   return (
-    <section class="home">
+    <section className="home">
       <div className="home-mobile">
         <figure>
           <img src={image} alt="home-image" />
         </figure>
-        <h1> Calle'$ Construcction</h1>
+        <h1> Calle&apos;$ Construcction</h1>
         <p>
           We offer a variety of professional contracting services to meet all
           your needs. <span className="admin-badge">{user.id && "Admin"}</span>
@@ -30,7 +30,7 @@ function Home() {
       <div className="home-desktop">
         <div className="home-desktop-title">
           <h1>
-            Calle'$ <br />
+            Calle&apos;$ <br />
             Construcction
           </h1>
           <p>

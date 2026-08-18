@@ -1,12 +1,11 @@
-import React from "react";
 import Service from "../commons/Service";
-import { services } from "../utilities/services.js";
+import { services } from "../utilities/services";
 import { useNavigate } from "react-router-dom";
 
-function Services({ takeValue }) {
+function Services({ takeValue }: { takeValue: (value: string) => void }) {
   const navigation = useNavigate();
 
-  const getService = (value) => {
+  const getService = (value: string) => {
     takeValue(value);
     navigation("/jobs");
   };

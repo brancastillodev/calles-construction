@@ -1,7 +1,6 @@
-import React from "react";
 import { Link } from "react-router-dom";
 
-function Hidden({ isOpen }) {
+function Hidden({ isOpen }: { isOpen: boolean }) {
   return (
     <div>
       <ul className={`nav-links ${isOpen ? "open" : ""}`}>

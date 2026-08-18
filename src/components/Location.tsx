@@ -1,4 +1,3 @@
-import React from "react";
 import calles from "../assets/new-calles.png";
 import map from "../assets/map.png";
 

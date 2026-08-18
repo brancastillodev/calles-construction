@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { setUser } from "../state/userState";
 import { useDispatch, useSelector } from "react-redux";
+import { clearSession } from "../utils/auth";
 import { alerts } from "../utils/alerts";
 import one from "../assets/1.svg";
 import two from "../assets/2.svg";
@@ -12,18 +12,14 @@ import six from "../assets/6.svg";
 
 export default function Footer() {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
-  const [date, setDate] = useState(null);
-
-  useEffect(() => {
-    const getDate = async () => {};
-  }, []);
+  const user = useSelector((state: { user: { id?: string } }) => state.user);
 
   function handleLogout() {
     const noUser = {
       id: null,
       email: null,
     };
+    clearSession();
     dispatch(setUser(noUser));
     alerts("Bye!", `You logout successfully`, "info");
   }
@@ -65,7 +61,7 @@ export default function Footer() {
               {!user.id ? (
                 <Link to={"/login"}> Admin Mode</Link>
               ) : (
-                <Link onClick={handleLogout}> Logout</Link>
+                <Link to={"/login"} onClick={handleLogout}> Logout</Link>
               )}
             </p>
           </div>

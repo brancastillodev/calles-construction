@@ -1,19 +1,19 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import emailjs from "emailjs-com";
 import { alerts } from "../utils/alerts";
 import ReactLoading from "react-loading";
 
 function Estimate() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [number, setNumber] = useState("");
-  const [message, setMessage] = useState("");
-  const [sending, setSending] = useState(false);
+  const [name, setName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [number, setNumber] = useState<string>("");
+  const [message, setMessage] = useState<string>("");
+  const [sending, setSending] = useState<boolean>(false);
   const SERVICE_ID = import.meta.env.VITE_SERVICE_ID;
   const TEMPLATE_ID = import.meta.env.VITE_TEMPLATE_ID;
   const USER_ID = import.meta.env.VITE_USER_ID;
 
-  const handleForm = async (e) => {
+  const handleForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     setSending(true);
@@ -73,7 +73,7 @@ function Estimate() {
             required
             type="text"
             maxLength={25}
-          ></input>
+          />
         </div>
         <div className="field">
           <label htmlFor="email">Your Email</label>
@@ -85,7 +85,7 @@ function Estimate() {
             required
             type="email"
             maxLength={30}
-          ></input>
+          />
         </div>
         <div className="field">
           <label htmlFor="number">Your Number</label>
@@ -98,7 +98,7 @@ function Estimate() {
             type="number"
             max={999999999999999}
             min={1111}
-          ></input>
+          />
         </div>
         <div className="field">
           <label htmlFor="message">Your Message</label>
@@ -110,13 +110,13 @@ function Estimate() {
             required
             rows={4}
             maxLength={400}
-          ></textarea>
+          />
         </div>
         <div className="estimate-button">
           {sending ? (
             <div style={{ margin: "0 auto" }}>
               <ReactLoading
-                type={"spin"}
+                type="spin"
                 color="#0f4c61"
                 height={50}
                 width={50}

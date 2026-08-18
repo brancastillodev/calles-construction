@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-import axios from "axios";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect, useRef, useState } from "react";
 import { Squash as Hamburger } from "hamburger-react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -7,23 +7,25 @@ import ReactLoading from "react-loading";
 import defaultLogo from "../assets/nav-logo.png";
 import { alerts } from "../utils/alerts";
 import { uploadImages } from "../utils/utils";
-import { apiSegura } from "../utils/utils.js";
+import { apiSegura } from "../utils/utils";
 
-function Navbar({ openFunc }) {
-  const user = useSelector((state) => state.user);
+interface Logo {
+  link: string;
+}
+
+function Navbar({ openFunc }: { openFunc: (state: boolean) => void }) {
+  const user = useSelector((state: { user: { id?: string } }) => state.user);
   const [isOpen, setOpen] = useState(false);
-  const [logo, setLogo] = useState({ link: defaultLogo });
-  const [newLogo, setNewLogo] = useState("");
+  const [logo, setLogo] = useState<Logo>({ link: defaultLogo });
+  const [newLogo, setNewLogo] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
-
   const [estado, setEstado] = useState(false);
-  const imgUpdater = useRef(null);
+  const imgUpdater = useRef<HTMLInputElement | null>(null);
 
-  useEffect(() => {
+useEffect(() => {
     openFunc(isOpen);
   }, [isOpen]);
 
-  //se lee el ultimo LOGO de la base de datos
   useEffect(() => {
     const getLogo = async () => {
       try {
@@ -42,41 +44,34 @@ function Navbar({ openFunc }) {
     getLogo();
   }, [estado]);
 
-  //obtiene la imagen seleccionada y la sube a la base de datos
-  const handleNewImage = (e) => {
-    setNewLogo(e.target.files[0]);
+  const handleNewImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNewLogo(e.target.files?.[0] ?? null);
   };
 
-  useEffect(() => {
+useEffect(() => {
     if (newLogo) {
       handleChangeImage();
     }
   }, [newLogo]);
 
   const handleChangeImage = async () => {
-    //cambio el valor de Loading...
     setLoading(true);
 
     try {
-      const link = await uploadImages(newLogo);
+      const link = await uploadImages(newLogo as unknown as File);
 
       await apiSegura.post(
         "https://calles-construction-back.onrender.com/api/descriptions/create",
         { link }
       );
 
-      //cambio el estado del front
       setEstado(!estado);
-
-      //le muestro un alert al usuario de que todo salió bien
       alerts("Okey!", "Logo updated successfuly", "success");
     } catch (e) {
-      //muestro por consola si hubo un error
       console.log("error de cliente", e);
-      //le muestro un alert al usuario de que algo salió mal
       alerts("Sorry!", "Logo couldn't be updated, try again", "danger");
     }
-    //vuelvo el valor de loading a falso
+
     setLoading(false);
   };
 
@@ -89,12 +84,12 @@ function Navbar({ openFunc }) {
           </figure>
         </Link>
         {user.id && (
-          <button id="logo-button" onClick={() => imgUpdater.current.click()}>
+          <button id="logo-button" onClick={() => imgUpdater.current?.click()}>
             Change
           </button>
         )}
         {loading && (
-          <ReactLoading type={"spin"} color="#0f4c61" height={30} width={30} />
+          <ReactLoading type="spin" color="#0f4c61" height={30} width={30} />
         )}
       </div>
       <ul className="desktop-navbar">
@@ -112,7 +107,7 @@ function Navbar({ openFunc }) {
         type="file"
         onChange={(e) => handleNewImage(e)}
         style={{ display: "none" }}
-      ></input>
+      />
     </nav>
   );
 }

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getToken, clearSession } from "./auth";
 
 export const apiSegura = axios.create({
   timeout: 10000,
@@ -6,9 +7,31 @@ export const apiSegura = axios.create({
   maxBodyLength: 50 * 1024 * 1024,
 });
 
-//upload image to the cloud
-export const uploadImages = async (pic) => {
-  //las funciones async siempre van a devolver una promesa
+const isBackendCall = (url?: string): boolean =>
+  !!url && url.includes("calles-construction-back.onrender.com");
+
+apiSegura.interceptors.request.use((config) => {
+  const token = getToken();
+  if (token && isBackendCall(config.url)) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+apiSegura.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (
+      error.response?.status === 401 &&
+      isBackendCall(error.config?.url)
+    ) {
+      clearSession();
+    }
+    throw error;
+  }
+);
+
+export const uploadImages = async (pic: File): Promise<string> => {
   const f = new FormData();
   f.append("file", pic);
   f.append("upload_preset", "calles_preset_images");
@@ -26,8 +49,7 @@ export const uploadImages = async (pic) => {
   }
 };
 
-//upload image to the database   --> devuleve true
-export const imagesDb = async (link, category, jid) => {
+export const imagesDb = async (link: string, category: string, jid: number): Promise<boolean> => {
   try {
     await apiSegura.post(
       "https://calles-construction-back.onrender.com/api/images/create",

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import Home from "./Home";
 import Jobs from "./Jobs";
@@ -7,11 +7,13 @@ import Estimate from "./Estimate";
 import Services from "./Services";
 import Location from "./Location";
 import Login from "./Login";
+import AdminPanel from "./AdminPanel";
+import RequireAuth from "../commons/RequireAuth";
 
 function AppRoutes() {
   const [value, setValue] = useState("");
 
-  const serviceValueHandler = (value) => {
+  const serviceValueHandler = (value: string) => {
     setValue(value);
   };
 
@@ -27,6 +29,14 @@ function AppRoutes() {
       />
       <Route path="location" element={<Location />} />
       <Route path="login" element={<Login />} />
+      <Route
+        path="admin"
+        element={
+          <RequireAuth>
+            <AdminPanel />
+          </RequireAuth>
+        }
+      />
     </Routes>
   );
 }

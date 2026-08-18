@@ -1,13 +1,25 @@
-import React from "react";
 import { useSelector } from "react-redux";
 import trash from "../assets/trash.svg";
 import ReactLoading from "react-loading";
 
-function Image({ image, handleDelete, handleUpdate, processing }) {
-  const user = useSelector((state) => state.user);
+interface GalleryImage {
+  id: number;
+  image: string;
+  category: string;
+}
+
+interface ImageProps {
+  image: GalleryImage;
+  handleDelete: (id: number | string) => void;
+  handleUpdate: (id: number | string) => void;
+  processing: number | string | null;
+}
+
+function Image({ image, handleDelete, handleUpdate, processing }: ImageProps) {
+  const user = useSelector((state: { user: { id?: string } }) => state.user);
 
   return (
-    <div className="image-card" key={image.id}>
+    <div className="image-card">
       <div className="gallery-image">
         <figure>
           <img src={image.image} className="job-img" />
@@ -25,7 +37,12 @@ function Image({ image, handleDelete, handleUpdate, processing }) {
           </div>
         )}
         {processing == image.id && (
-          <ReactLoading type={"spin"} color="#0f4c61" height={50} width={50} />
+          <ReactLoading
+            type="spin"
+            color="#0f4c61"
+            height={50}
+            width={50}
+          />
         )}
       </div>
     </div>

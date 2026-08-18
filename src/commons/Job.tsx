@@ -1,25 +1,45 @@
-import React, { useRef, useState } from "react";
+import { useState } from "react";
 import trash from "../assets/trash.svg";
 import edit from "../assets/edit.svg";
 import { useSelector } from "react-redux";
 import ReactLoading from "react-loading";
 
+interface ServiceData {
+  id: number | string;
+  title: string;
+  description: string;
+  date: string;
+  category: string;
+  side?: string;
+  images?: { id: number | string; image: string }[];
+}
+
+interface JobProps {
+  service: ServiceData;
+  deleteFun: (id: number | string) => void;
+  updateData: (
+    id: number | string,
+    data: { title: string; description: string; date: string }
+  ) => void;
+  updateImages: (imageId: number | string, jobId: number | string) => void;
+  indice: number;
+  processing: number | string | null;
+}
+
 function Job({
-  key,
   service,
   deleteFun,
   updateData,
   updateImages,
   indice,
   processing,
-}) {
-  const user = useSelector((state) => state.user);
+}: JobProps) {
+  const user = useSelector((state: { user: { id?: string } }) => state.user);
   const [editMode, setEditMode] = useState(false);
   const [desc, setDesc] = useState(service.description);
   const [title, setTitle] = useState(service.title);
   const [dat, setDat] = useState(service.date.split("T")[0]);
 
-  //algoritmo para calcular Fecha
   if (indice % 2 === 0) {
     service.side = "l";
   } else service.side = "r";
@@ -41,10 +61,10 @@ function Job({
     "Dec",
   ];
 
-  const date = meses[fecha[1] - 1] + " " + fecha[2];
+  const date = meses[Number(fecha[1]) - 1] + " " + fecha[2];
 
   return (
-    <div className="job-card" key={key}>
+    <div className="job-card">
       <div className={`pencil-line ${service.side}`}>
         {editMode ? (
           <>
@@ -52,13 +72,13 @@ function Job({
               className="input-job"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-            ></input>
+            />
             <input
               className="input-job"
               type="date"
               value={dat}
               onChange={(e) => setDat(e.target.value)}
-            ></input>
+            />
           </>
         ) : (
           <>
@@ -73,11 +93,10 @@ function Job({
             <>
               <figure
                 onClick={() => setEditMode(!editMode)}
-                on
                 className="job-button"
                 title="Enter Edit Mode"
               >
-                <img src={edit} alt="edit-icon"></img>
+                <img src={edit} alt="edit-icon" />
               </figure>
               <figure
                 onClick={() => deleteFun(service.id)}
@@ -92,22 +111,19 @@ function Job({
 
       <section className={service.side}>
         {editMode ? (
-          <>
-            <textarea
-              value={desc}
-              onChange={(e) => setDesc(e.target.value)}
-              type="text"
-              rows={3}
-              maxLength={250}
-              className="input-job"
-            />
-          </>
+          <textarea
+            value={desc}
+            onChange={(e) => setDesc(e.target.value)}
+            className="input-job"
+            rows={3}
+            maxLength={250}
+          />
         ) : (
           <p>{service.description}</p>
         )}
       </section>
 
-      <div className={"last-row"}>
+      <div className="last-row">
         {editMode && (
           <>
             <div className="edit-buttons">
@@ -127,7 +143,7 @@ function Job({
                 onClick={() => setEditMode(!editMode)}
                 className="edit-button"
               >
-                <img src={edit} alt="edit-icon" title="Exit Edit Mode"></img>
+                <img src={edit} alt="edit-icon" title="Exit Edit Mode" />
               </figure>
               <figure
                 onClick={() => deleteFun(service.id)}
@@ -139,12 +155,11 @@ function Job({
             {processing === service.id && (
               <>
                 <ReactLoading
-                  type={"spin"}
+                  type="spin"
                   color="#0f4c61"
                   height={50}
                   width={50}
                 />
-                {setEditMode(false)}
               </>
             )}
           </>

@@ -1,8 +1,8 @@
-import React, { useRef } from "react";
-import { useEffect, useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useRef, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { alerts } from "../utils/alerts";
-import { apiSegura } from "../utils/utils.js";
+import { apiSegura } from "../utils/utils";
 import axios from "axios";
 import Image from "../commons/Image";
 import lessButton from "../assets/lessButton.svg";
@@ -14,39 +14,43 @@ import ReactLoading from "react-loading";
 import TopButton from "../commons/TopButton";
 import { uploadImages, imagesDb } from "../utils/utils";
 
+interface GalleryImage {
+  id: number;
+  image: string;
+  category: string;
+}
+
 function Gallery() {
-  const user = useSelector((state) => state.user);
-  const [gallery, setGallery] = useState([]); //all images
-  const [rubro, setRubro] = useState("Drywall");
-  const [finalJobs, setFinalJobs] = useState([]); //filter por rubro
-  const [estado, setEstado] = useState(false); //state listener
-  const [more, setMore] = useState(false); //guardar datos
-  const [category, setCategory] = useState("Drywall");
-  const [allImages, setAllImages] = useState([]);
-  const [moreImages, setMoreImages] = useState(1);
+  const user = useSelector((state: { user: { id?: string } }) => state.user);
+  const [gallery, setGallery] = useState<GalleryImage[]>([]);
+  const [rubro, setRubro] = useState<string>("Drywall");
+  const [finalJobs, setFinalJobs] = useState<GalleryImage[]>([]);
+  const [estado, setEstado] = useState<boolean>(false);
+  const [more, setMore] = useState<boolean>(false);
+  const [category, setCategory] = useState<string>("Drywall");
+  const [allImages, setAllImages] = useState<File[]>([]);
+  const [moreImages, setMoreImages] = useState<number>(1);
   const divs = Array.from({ length: moreImages });
-  const [loading, setLoading] = useState(false);
-  const [confirmBox, setConfirmBox] = useState(false);
-  const [id, setId] = useState({});
-  const [processing, setProcessing] = useState(null);
-  const imgUpdater = useRef(null);
-  const [newImg, setNewImg] = useState("");
+  const [loading, setLoading] = useState<boolean>(false);
+  const [confirmBox, setConfirmBox] = useState<boolean>(false);
+  const [id, setId] = useState<number | string>(0);
+  const [processing, setProcessing] = useState<number | string | null>(null);
+  const imgUpdater = useRef<HTMLInputElement | null>(null);
+  const [newImg, setNewImg] = useState<File | string>("");
   const openBox = () => setConfirmBox(true);
   const closeBox = () => setConfirmBox(false);
-  const [loading2, setLoading2] = useState(true)
+  const [loading2, setLoading2] = useState<boolean>(true);
 
-  //get images
   useEffect(() => {
     axios
       .get("https://calles-construction-back.onrender.com/api/images/")
       .then((resp) => {
-        setGallery(resp.data)
-        setLoading2(false)
+        setGallery(resp.data);
+        setLoading2(false);
       })
       .catch((err) => console.log(err));
   }, [estado]);
 
-  // filtrar;
   useEffect(() => {
     if (gallery.length > 0) {
       setFinalJobs(
@@ -57,7 +61,6 @@ function Gallery() {
     }
   }, [rubro, gallery]);
 
-  //select default value for category with rubro
   useEffect(() => {
     if (rubro) {
       setCategory(rubro.toLowerCase());
@@ -66,8 +69,7 @@ function Gallery() {
     }
   }, [rubro]);
 
-  //post image
-  const createImage = async (e) => {
+  const createImage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
 
@@ -96,8 +98,7 @@ function Gallery() {
     setLoading(false);
   };
 
-  //delete images
-  const handleDelete = (id) => {
+  const handleDelete = (id: number | string) => {
     setId(id);
     openBox();
   };
@@ -123,20 +124,19 @@ function Gallery() {
     setProcessing(0);
   };
 
-  //update image
-  const handleUpdate = (id) => {
+  const handleUpdate = (id: number | string) => {
     setId(id);
-    imgUpdater.current.click();
+    imgUpdater.current?.click();
   };
 
-  const handleNewImage = (e) => {
-    const s = e.target.files[0];
+  const handleNewImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const s = e.target.files?.[0];
     console.log("archivo recibido para mod", s);
-    setNewImg(s);
+    setNewImg(s as File);
     console.log("archivo newImg", newImg);
   };
 
-  useEffect(() => {
+useEffect(() => {
     console.log("newImg dentro del useEffect", newImg);
 
     if (newImg) {
@@ -148,7 +148,7 @@ function Gallery() {
     setProcessing(id);
     try {
       console.log("cuando lega la img en handleChangeImage", newImg);
-      const link = await uploadImages(newImg);
+      const link = await uploadImages(newImg as File);
       await apiSegura.put(
         `https://calles-construction-back.onrender.com/api/images/update/${id}`,
         { link }
@@ -161,7 +161,6 @@ function Gallery() {
         "success"
       );
       setProcessing(0);
-      return true;
     } catch (e) {
       alerts(
         "Modification Error",
@@ -170,12 +169,10 @@ function Gallery() {
       );
       console.log(e);
       setProcessing(0);
-      return false;
     }
   };
 
   console.log("gallery", gallery);
-
   console.log("final", finalJobs);
 
   return (
@@ -192,7 +189,6 @@ function Gallery() {
         Select a category
       </p>
 
-      {/* botonera */}
       <div className="botonera">
         <a onClick={() => setRubro("Drywall")}>Drywall</a>
         <a onClick={() => setRubro("Painting")}>Painting</a>
@@ -204,18 +200,17 @@ function Gallery() {
 
       {rubro && <h3>{rubro}</h3>}
 
-      {/* imágenes */}
-
-      {loading2 ? 
-      <div>
-      <ReactLoading
-        type={"spin"}
-        color="#0f4c61"
-        height={50}
-        width={50}
-        />
-      </div>:
-      finalJobs.length > 0 &&
+      {loading2 ? (
+        <div>
+          <ReactLoading
+            type="spin"
+            color="#0f4c61"
+            height={50}
+            width={50}
+          />
+        </div>
+      ) : (
+        finalJobs.length > 0 &&
         finalJobs.map((img) => (
           <Image
             key={img.id}
@@ -224,13 +219,13 @@ function Gallery() {
             handleUpdate={handleUpdate}
             processing={processing}
           />
-        ))}
+        ))
+      )}
 
-      {/* form */}
       {user.id && (
         <>
           <figure onClick={() => setMore(!more)} className="more-button">
-            <img src={more ? lessButton : moreButton} alt="less-button"></img>
+            <img src={more ? lessButton : moreButton} alt="less-button" />
           </figure>
           {more && (
             <div className="form-job">
@@ -255,13 +250,13 @@ function Gallery() {
 
                 {divs.map((_, index) => (
                   <div key={index} className="field">
-                    <label htmlFor="image">Image {index + 1}</label>
+                    <label htmlFor={`image-${index}`}>Image {index + 1}</label>
                     <input
                       id={`image-${index}`}
                       type="file"
                       onChange={(e) => {
                         const updatedImages = [...allImages];
-                        updatedImages[index] = e.target.files[0];
+                        updatedImages[index] = e.target.files?.[0] as File;
                         setAllImages(updatedImages);
                       }}
                       required
@@ -279,7 +274,7 @@ function Gallery() {
                       }
                       className="more-button"
                     >
-                      <img src={minus} alt="more-button"></img>
+                      <img src={minus} alt="more-button" />
                     </figure>
                   )}
 
@@ -292,7 +287,7 @@ function Gallery() {
                       }
                       className="more-button"
                     >
-                      <img src={plus} alt="more-button"></img>
+                      <img src={plus} alt="more-button" />
                     </figure>
                   )}
                 </div>
@@ -300,7 +295,7 @@ function Gallery() {
                 {loading ? (
                   <div style={{ margin: "0 auto" }}>
                     <ReactLoading
-                      type={"spin"}
+                      type="spin"
                       color="#0f4c61"
                       height={50}
                       width={50}
@@ -323,7 +318,7 @@ function Gallery() {
         type="file"
         onChange={(e) => handleNewImage(e)}
         style={{ display: "none" }}
-      ></input>
+      />
 
       <UserModals
         isOpen={confirmBox}

@@ -1,5 +1,3 @@
-import React from "react";
-
 function TopButton() {
   function handleGo() {
     const refe = document.getElementById("navbar");

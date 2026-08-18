@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
@@ -14,29 +15,39 @@ import ReactLoading from "react-loading";
 import plus from "../assets/plus.svg";
 import minus from "../assets/minus.svg";
 import { uploadImages, imagesDb } from "../utils/utils";
-import { apiSegura } from "../utils/utils.js";
+import { apiSegura } from "../utils/utils";
 
-function Jobs({ serv }) {
-  const user = useSelector((state) => state.user);
-  const [jobs, setJobs] = useState({});
-  const [rubro, setRubro] = useState(serv || "Drywall");
-  const [finalJobs, setFinalJobs] = useState([]); //jobs filtrados
-  const [estado, setEstado] = useState(false);
-  const [more, setMore] = useState(false);
-  const [category, setCategory] = useState("");
-  const [title, setTitle] = useState("");
-  const [date, setDate] = useState("");
-  const [desc, setDesc] = useState("");
-  const [allImages, setAllImages] = useState([]);
-  const [moreImages, setMoreImages] = useState(1);
+interface JobsData {
+  id: number | string;
+  title: string;
+  description: string;
+  category: string;
+  side?: string;
+  date: string;
+  images?: { id: number | string; image: string }[];
+}
+
+function Jobs({ serv }: { serv?: string }) {
+  const user = useSelector((state: { user: { id?: string } }) => state.user);
+  const [jobs, setJobs] = useState<JobsData[]>([]);
+  const [rubro, setRubro] = useState<string>(serv || "Drywall");
+  const [finalJobs, setFinalJobs] = useState<JobsData[]>([]);
+  const [estado, setEstado] = useState<boolean>(false);
+  const [more, setMore] = useState<boolean>(false);
+  const [category, setCategory] = useState<string>("");
+  const [title, setTitle] = useState<string>("");
+  const [date, setDate] = useState<string>("");
+  const [desc, setDesc] = useState<string>("");
+  const [allImages, setAllImages] = useState<File[]>([]);
+  const [moreImages, setMoreImages] = useState<number>(1);
   const divs = Array.from({ length: moreImages });
-  const [loading, setLoading] = useState(false);
-  const [confirmBox, setConfirmBox] = useState(false);
-  const [id, setId] = useState("");
-  const [processing, setProcessing] = useState(null);
-  const imgUpdater = useRef(null);
-  const [newImg, setNewImg] = useState("");
-  const [loading2, setLoading2] = useState(true);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [confirmBox, setConfirmBox] = useState<boolean>(false);
+  const [id, setId] = useState<number | string>("");
+  const [processing, setProcessing] = useState<number | string | null>(null);
+  const imgUpdater = useRef<HTMLInputElement | null>(null);
+  const [newImg, setNewImg] = useState<File | string>("");
+  const [loading2, setLoading2] = useState<boolean>(true);
   const openBox = () => setConfirmBox(true);
   const closeBox = () => setConfirmBox(false);
 
@@ -45,12 +56,12 @@ function Jobs({ serv }) {
     axios
       .get("https://calles-construction-back.onrender.com/api/jobs")
       .then((resp) => {
-        const jobsData = resp.data;
+        const jobsData: JobsData[] = resp.data;
         
-        setLoading2(true)
+        setLoading2(true);
 
         // Crear array de promesas
-        const jobsWithImagesPromises = jobsData.map(async (job) => {
+        const jobsWithImagesPromises = jobsData.map(async (job: JobsData) => {
           const jid = job.id;
           const imagesResp = await apiSegura.get(
             `https://calles-construction-back.onrender.com/api/images/job/${jid}`
@@ -60,27 +71,27 @@ function Jobs({ serv }) {
 
         // Esperar a que TODAS las promesas se resuelvan
         Promise.all(jobsWithImagesPromises)
-          .then((finalJobs) => {
+          .then((finalJobs: JobsData[]) => {
             setJobs(finalJobs);
-            setLoading2(false); // <── DESACTIVAR LOADING SOLO CUANDO TODO TERMINÓ
+            setLoading2(false);
           })
-          .catch((e) => {
+          .catch((e: unknown) => {
             console.log(e);
-            setLoading2(false); // <── TAMBIÉN EN CASO DE ERROR
+            setLoading2(false);
           });
 
       })
-      .catch((err) => {
+      .catch((err: unknown) => {
         console.log(err);
-        setLoading2(true); // <── TAMBIÉN EN CASO DE ERROR
+        setLoading2(true);
       });
-}, [estado]);
+  }, [estado]);
 
   //filtrar
   useEffect(() => {
     if (jobs.length > 0) {
       setFinalJobs(
-        jobs.filter((ele) => ele.category.toLowerCase() == rubro.toLowerCase())
+        jobs.filter((ele: JobsData) => ele.category.toLowerCase() == rubro.toLowerCase())
       );
     }
   }, [rubro, jobs]);
@@ -99,8 +110,7 @@ function Jobs({ serv }) {
   }, [rubro]);
 
   //create job
-  //both data in jobs and images in gallery!
-  const createJobs = async (e) => {
+  const createJobs = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
 
@@ -132,7 +142,7 @@ function Jobs({ serv }) {
       setDesc("");
       setDate("");
       setAllImages([]);
-    } catch (e) {
+    } catch (e: unknown) {
       console.log(e);
       alerts("Upload Error", "The job could not be uploaded.", "warning");
     }
@@ -141,7 +151,7 @@ function Jobs({ serv }) {
   };
 
   //delete job
-  function handleDelete(id) {
+  function handleDelete(id: number | string) {
     setId(id);
     openBox();
   }
@@ -160,16 +170,18 @@ function Jobs({ serv }) {
         "The job has been deleted successfully.",
         "success"
       );
-    } catch (e) {
+    } catch (e: unknown) {
       console.log(e);
       alerts("Deletion Error", "The job could not be deleted.", "warning");
     }
     setProcessing(0);
   };
-  //borra de la base y del front solo la primera vez, la seg solo de la base
 
   //update job
-  const updateData = async (id, data) => {
+  const updateData = async (
+    id: number | string,
+    data: { title: string; description: string; date: string }
+  ) => {
     setProcessing(id);
     console.log("nueva data from updateDAte", data);
     try {
@@ -184,7 +196,7 @@ function Jobs({ serv }) {
         "The job has been modified successfully.",
         "success"
       );
-    } catch (e) {
+    } catch (e: unknown) {
       alerts("Modification Error", "The job could not be modified.", "warning");
       console.log(e);
     }
@@ -192,22 +204,22 @@ function Jobs({ serv }) {
   };
 
   //update image
-  const updateImages = (id, sid) => {
+  const updateImages = (id: number | string, sid: number | string) => {
     console.log("id del job que pidio mod imagen", sid);
     console.log("id de la imagen a mod", id);
     setProcessing(sid);
     setId(id);
-    imgUpdater.current.click();
+    imgUpdater.current?.click();
   };
 
-  const handleNewImage = (e) => {
-    const s = e.target.files[0];
+  const handleNewImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const s = e.target.files?.[0];
     console.log("archivo recibido para mod", s);
-    setNewImg(s);
+    setNewImg(s as File);
     console.log("archivo newImg", newImg);
   };
 
-  useEffect(() => {
+useEffect(() => {
     console.log("newImg dentro del useEffect", newImg);
 
     if (newImg) {
@@ -218,7 +230,7 @@ function Jobs({ serv }) {
   const handleChangeImage = async () => {
     try {
       console.log("cuando lega la img en handleChangeImage", newImg);
-      const link = await uploadImages(newImg);
+      const link = await uploadImages(newImg as File);
       await apiSegura.put(
         `https://calles-construction-back.onrender.com/api/images/update/${id}`,
         { link }
@@ -230,7 +242,7 @@ function Jobs({ serv }) {
         "The image has been modified successfully.",
         "success"
       );
-    } catch (e) {
+    } catch (e: unknown) {
       alerts(
         "Modification Error",
         "The image could not be modified.",
@@ -330,7 +342,6 @@ function Jobs({ serv }) {
                   <label htmlFor="desc">Description</label>
                   <textarea
                     id="desc"
-                    type="text"
                     onChange={(e) => setDesc(e.target.value)}
                     value={desc}
                     required
@@ -364,9 +375,12 @@ function Jobs({ serv }) {
                       id="image"
                       type="file"
                       onChange={(e) => {
-                        const updatedImages = [...allImages];
-                        updatedImages[index] = e.target.files[0];
-                        setAllImages(updatedImages);
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          const updatedImages = [...allImages];
+                          updatedImages[index] = file;
+                          setAllImages(updatedImages);
+                        }
                       }}
                       required
                     />
