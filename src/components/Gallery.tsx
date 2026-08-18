@@ -190,12 +190,23 @@ useEffect(() => {
       </p>
 
       <div className="botonera">
-        <a onClick={() => setRubro("Drywall")}>Drywall</a>
-        <a onClick={() => setRubro("Painting")}>Painting</a>
-        <a onClick={() => setRubro("Electrical")}>Electrical</a>
-        <a onClick={() => setRubro("Carpentry")}>Carpentry</a>
-        <a onClick={() => setRubro("Plumbing")}>Plumbing</a>
-        <a onClick={() => setRubro("Utilities")}>Utilities</a>
+        {["Drywall", "Painting", "Electrical", "Carpentry", "Plumbing", "Utilities"].map(
+          (cat) => (
+            <a
+              key={cat}
+              tabIndex={0}
+              onClick={() => setRubro(cat)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  setRubro(cat);
+                }
+              }}
+            >
+              {cat}
+            </a>
+          )
+        )}
       </div>
 
       {rubro && <h3>{rubro}</h3>}

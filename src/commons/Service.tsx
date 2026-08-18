@@ -21,7 +21,18 @@ function Service({ element, getTitle }: ServiceProps) {
       <figure>
         <img src={element.logo} alt={element.title} />
       </figure>
-      <a onClick={() => getTitle(element.title)}>{element.title}</a>
+      <a
+        tabIndex={0}
+        onClick={() => getTitle(element.title)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            getTitle(element.title);
+          }
+        }}
+      >
+        {element.title}
+      </a>
       <p>{element.desc}</p>
     </div>
   );
