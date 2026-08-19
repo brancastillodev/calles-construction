@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useRef, useState } from "react";
-import axios from "axios";
 import { useSelector } from "react-redux";
 import { alerts } from "../utils/alerts";
 import { texts } from "../utilities/text";
@@ -16,6 +15,7 @@ import plus from "../assets/plus.svg";
 import minus from "../assets/minus.svg";
 import { uploadImages, imagesDb } from "../utils/utils";
 import { apiSegura } from "../utils/utils";
+import { API_URL } from "../utils/api";
 
 interface JobsData {
   id: number | string;
@@ -53,8 +53,8 @@ function Jobs({ serv }: { serv?: string }) {
 
   //get all jobs
   useEffect(() => {
-    axios
-      .get("https://calles-construction-back.onrender.com/api/jobs")
+    apiSegura
+      .get(`${API_URL}/api/jobs`)
       .then((resp) => {
         const jobsData: JobsData[] = resp.data;
         
@@ -64,7 +64,7 @@ function Jobs({ serv }: { serv?: string }) {
         const jobsWithImagesPromises = jobsData.map(async (job: JobsData) => {
           const jid = job.id;
           const imagesResp = await apiSegura.get(
-            `https://calles-construction-back.onrender.com/api/images/job/${jid}`
+            `${API_URL}/api/images/job/${jid}`
           );
           return { ...job, images: imagesResp.data };
         });
@@ -119,7 +119,7 @@ function Jobs({ serv }: { serv?: string }) {
       const newJob = { title, description: desc, date, category };
 
       const { data } = await apiSegura.post(
-        "https://calles-construction-back.onrender.com/api/jobs/create",
+        `${API_URL}/api/jobs/create`,
         { newJob }
       );
 
@@ -162,7 +162,7 @@ function Jobs({ serv }: { serv?: string }) {
     setProcessing(id);
     try {
       await apiSegura.delete(
-        `https://calles-construction-back.onrender.com/api/jobs/delete/${id}`
+        `${API_URL}/api/jobs/delete/${id}`
       );
 
       setEstado(!estado);
@@ -187,7 +187,7 @@ function Jobs({ serv }: { serv?: string }) {
     console.log("nueva data from updateDAte", data);
     try {
       await apiSegura.put(
-        `https://calles-construction-back.onrender.com/api/jobs/update/${id}`,
+        `${API_URL}/api/jobs/update/${id}`,
         { data }
       );
 
@@ -233,7 +233,7 @@ useEffect(() => {
       console.log("cuando lega la img en handleChangeImage", newImg);
       const link = await uploadImages(newImg as File);
       await apiSegura.put(
-        `https://calles-construction-back.onrender.com/api/images/update/${id}`,
+        `${API_URL}/api/images/update/${id}`,
         { link }
       );
 

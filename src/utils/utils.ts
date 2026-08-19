@@ -2,6 +2,7 @@ import axios from "axios";
 import { getToken, clearSession } from "./auth";
 import store from "../state/store";
 import { setUser } from "../state/userState";
+import { API_URL } from "./api";
 
 export const apiSegura = axios.create({
   timeout: 10000,
@@ -10,7 +11,7 @@ export const apiSegura = axios.create({
 });
 
 const isBackendCall = (url?: string): boolean =>
-  !!url && url.includes("calles-construction-back.onrender.com");
+  !!url && url.includes(API_URL);
 
 apiSegura.interceptors.request.use((config) => {
   const token = getToken();
@@ -55,7 +56,7 @@ export const uploadImages = async (pic: File): Promise<string> => {
 export const imagesDb = async (link: string, category: string, jid: number): Promise<boolean> => {
   try {
     await apiSegura.post(
-      "https://calles-construction-back.onrender.com/api/images/create",
+      `${API_URL}/api/images/create`,
       {
         image: link,
         category,

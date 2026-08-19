@@ -3,7 +3,7 @@ import { useRef, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { alerts } from "../utils/alerts";
 import { apiSegura } from "../utils/utils";
-import axios from "axios";
+import { API_URL } from "../utils/api";
 import Image from "../commons/Image";
 import lessButton from "../assets/lessButton.svg";
 import moreButton from "../assets/moreButton.svg";
@@ -42,8 +42,8 @@ function Gallery() {
   const [loading2, setLoading2] = useState<boolean>(true);
 
   useEffect(() => {
-    axios
-      .get("https://calles-construction-back.onrender.com/api/images/")
+    apiSegura
+      .get(`${API_URL}/api/images/`)
       .then((resp) => {
         setGallery(resp.data);
         setLoading2(false);
@@ -112,7 +112,7 @@ function Gallery() {
     setProcessing(id);
     try {
       await apiSegura.delete(
-        `https://calles-construction-back.onrender.com/api/images/delete/${id}`
+        `${API_URL}/api/images/delete/${id}`
       );
 
       setEstado(!estado);
@@ -154,7 +154,7 @@ useEffect(() => {
       console.log("cuando lega la img en handleChangeImage", newImg);
       const link = await uploadImages(newImg as File);
       await apiSegura.put(
-        `https://calles-construction-back.onrender.com/api/images/update/${id}`,
+        `${API_URL}/api/images/update/${id}`,
         { link }
       );
 

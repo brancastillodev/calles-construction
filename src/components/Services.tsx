@@ -14,15 +14,15 @@ function Services({ takeValue }: { takeValue: (value: string) => void }) {
     <section id="services" className="home">
       <div className="services-mobile">
         <h2>Services</h2>
-        {services.map((service, i) => (
-          <Service getTitle={getService} key={i} element={service} />
+        {services.map((service) => (
+          <Service getTitle={getService} key={service.title} element={service} />
         ))}
       </div>
       <div className="services-desktop">
         <h2>Services</h2>
         <div className="grid-services">
-          {services.map((service, i) => (
-            <Service getTitle={getService} key={i} element={service} />
+          {services.map((service) => (
+<Service getTitle={getService} key={service.title} element={service} />
           ))}
         </div>
       </div>

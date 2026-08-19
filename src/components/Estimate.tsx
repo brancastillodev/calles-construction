@@ -26,8 +26,6 @@ function Estimate() {
       reply_to: email,
     };
 
-    console.log(SERVICE_ID, TEMPLATE_ID, USER_ID);
-
     try {
       const res = await emailjs.send(
         SERVICE_ID,

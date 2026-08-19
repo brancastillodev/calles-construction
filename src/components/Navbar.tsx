@@ -25,7 +25,7 @@ function Navbar({ open, setOpen }: { open: boolean; setOpen: (state: boolean) =>
     const getLogo = async () => {
       try {
         const resp = await apiSegura.get(
-          "https://calles-construction-back.onrender.com/api/descriptions/"
+          `${API_URL}/api/descriptions/`
         );
 
         if (resp.data.length > 0) {
@@ -53,10 +53,10 @@ useEffect(() => {
     setLoading(true);
 
     try {
-      const link = await uploadImages(newLogo as unknown as File);
+      const link = await uploadImages(newLogo);
 
       await apiSegura.post(
-        "https://calles-construction-back.onrender.com/api/descriptions/create",
+        `${API_URL}/api/descriptions/create`,
         { link }
       );
 

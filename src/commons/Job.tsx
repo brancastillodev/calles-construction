@@ -40,9 +40,7 @@ function Job({
   const [title, setTitle] = useState(service.title);
   const [dat, setDat] = useState(service.date.split("T")[0]);
 
-  if (indice % 2 === 0) {
-    service.side = "l";
-  } else service.side = "r";
+  const side = indice % 2 === 0 ? "l" : "r";
 
   const fecha = service.date.split("T")[0].split("-");
 
@@ -65,7 +63,7 @@ function Job({
 
   return (
     <div className="job-card">
-      <div className={`pencil-line ${service.side}`}>
+      <div className={`pencil-line ${side}`}>
         {editMode ? (
           <>
             <input
@@ -109,7 +107,7 @@ function Job({
           ))}
       </div>
 
-      <section className={service.side}>
+      <section className={side}>
         {editMode ? (
           <textarea
             value={desc}
@@ -168,8 +166,8 @@ function Job({
 
       <div className="job-images">
         {service.images && service.images.length > 0 ? (
-          service.images.map((image, index) => (
-            <div key={index} className="job-image">
+          service.images.map((image) => (
+            <div key={image.id} className="job-image">
               <figure>
                 <img
                   src={image.image}

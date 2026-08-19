@@ -1,10 +1,11 @@
-import axios from "axios";
 import { useState } from "react";
 import { alerts } from "../utils/alerts";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../state/userState";
 import { setToken, setStoredUser } from "../utils/auth";
+import { apiSegura } from "../utils/utils";
+import { API_URL } from "../utils/api";
 import ReactLoading from "react-loading";
 import eyeOpen from "../assets/eye-outline.svg";
 import eyeClose from "../assets/eye-off-outline.svg";
@@ -26,8 +27,8 @@ function Login() {
   function handleLogin(e: React.FormEvent<HTMLFormElement>) {
     setLoading(true);
     e.preventDefault();
-    axios
-      .post("https://calles-construction-back.onrender.com/api/user/login", {
+    apiSegura
+      .post(`${API_URL}/api/user/login`, {
         email,
         password,
       })
