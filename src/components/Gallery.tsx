@@ -48,8 +48,7 @@ function Gallery() {
         setGallery(resp.data);
         setLoading2(false);
       })
-      .catch((err) => {
-        console.log(err);
+      .catch(() => {
         setLoading2(false);
         alerts("Connection Error", "Could not load images, try again", "danger");
       });
@@ -79,9 +78,7 @@ function Gallery() {
 
     try {
       for (let i = 0; i < allImages.length; i++) {
-        console.log(allImages[i]);
         const link = await uploadImages(allImages[i]);
-        console.log(link);
         await imagesDb(link, category, 0);
       }
 
@@ -96,7 +93,6 @@ function Gallery() {
       );
     } catch (e) {
       alerts("Upload Error", "The image(s) could not be uploaded.", "warning");
-      console.log(e);
     }
 
     setLoading(false);
@@ -122,7 +118,6 @@ function Gallery() {
         "success"
       );
     } catch (e) {
-      console.log(e);
       alerts("Deletion Error", "The image could not be deleted.", "warning");
     }
     setProcessing(0);
@@ -135,13 +130,10 @@ function Gallery() {
 
   const handleNewImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     const s = e.target.files?.[0];
-    console.log("archivo recibido para mod", s);
     setNewImg(s as File);
-    console.log("archivo newImg", newImg);
   };
 
 useEffect(() => {
-    console.log("newImg dentro del useEffect", newImg);
 
     if (newImg) {
       handleChangeImage();
@@ -151,7 +143,6 @@ useEffect(() => {
   const handleChangeImage = async () => {
     setProcessing(id);
     try {
-      console.log("cuando lega la img en handleChangeImage", newImg);
       const link = await uploadImages(newImg as File);
       await apiSegura.put(
         `${API_URL}/api/images/update/${id}`,
@@ -171,13 +162,10 @@ useEffect(() => {
         "The image could not be modified.",
         "warning"
       );
-      console.log(e);
       setProcessing(0);
     }
   };
 
-  console.log("gallery", gallery);
-  console.log("final", finalJobs);
 
   return (
     <section id="gallery" className="home">

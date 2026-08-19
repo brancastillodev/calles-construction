@@ -48,7 +48,6 @@ export const uploadImages = async (pic: File): Promise<string> => {
     );
     return data.secure_url;
   } catch (e) {
-    console.log(e);
     throw new Error("Failed to upload image to the cloud");
   }
 };
@@ -66,7 +65,6 @@ export const imagesDb = async (link: string, category: string, jid: number): Pro
 
     return true;
   } catch (e) {
-    console.log(e);
     throw new Error("Failed to upload image to the database");
   }
 };

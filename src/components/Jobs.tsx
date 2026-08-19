@@ -75,14 +75,12 @@ function Jobs({ serv }: { serv?: string }) {
             setJobs(finalJobs);
             setLoading2(false);
           })
-          .catch((e: unknown) => {
-            console.log(e);
+          .catch(() => {
             setLoading2(false);
           });
 
       })
-      .catch((err: unknown) => {
-        console.log(err);
+      .catch(() => {
         setLoading2(false);
         alerts("Connection Error", "Could not load jobs, try again", "danger");
       });
@@ -123,11 +121,9 @@ function Jobs({ serv }: { serv?: string }) {
         { newJob }
       );
 
-      console.log("data recibida luego de crear job", data[0]);
 
       for (let i = 0; i < allImages.length; i++) {
         const link = await uploadImages(allImages[i]);
-        console.log("link de imagen", link);
         await imagesDb(link, category, data[0].id);
       }
 
@@ -144,7 +140,6 @@ function Jobs({ serv }: { serv?: string }) {
       setDate("");
       setAllImages([]);
     } catch (e: unknown) {
-      console.log(e);
       alerts("Upload Error", "The job could not be uploaded.", "warning");
     }
 
@@ -172,7 +167,6 @@ function Jobs({ serv }: { serv?: string }) {
         "success"
       );
     } catch (e: unknown) {
-      console.log(e);
       alerts("Deletion Error", "The job could not be deleted.", "warning");
     }
     setProcessing(0);
@@ -184,7 +178,6 @@ function Jobs({ serv }: { serv?: string }) {
     data: { title: string; description: string; date: string }
   ) => {
     setProcessing(id);
-    console.log("nueva data from updateDAte", data);
     try {
       await apiSegura.put(
         `${API_URL}/api/jobs/update/${id}`,
@@ -199,15 +192,12 @@ function Jobs({ serv }: { serv?: string }) {
       );
     } catch (e: unknown) {
       alerts("Modification Error", "The job could not be modified.", "warning");
-      console.log(e);
     }
     setProcessing(0);
   };
 
   //update image
   const updateImages = (id: number | string, sid: number | string) => {
-    console.log("id del job que pidio mod imagen", sid);
-    console.log("id de la imagen a mod", id);
     setProcessing(sid);
     setId(id);
     imgUpdater.current?.click();
@@ -215,13 +205,10 @@ function Jobs({ serv }: { serv?: string }) {
 
   const handleNewImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     const s = e.target.files?.[0];
-    console.log("archivo recibido para mod", s);
     setNewImg(s as File);
-    console.log("archivo newImg", newImg);
   };
 
 useEffect(() => {
-    console.log("newImg dentro del useEffect", newImg);
 
     if (newImg) {
       handleChangeImage();
@@ -230,7 +217,6 @@ useEffect(() => {
 
   const handleChangeImage = async () => {
     try {
-      console.log("cuando lega la img en handleChangeImage", newImg);
       const link = await uploadImages(newImg as File);
       await apiSegura.put(
         `${API_URL}/api/images/update/${id}`,
@@ -249,7 +235,6 @@ useEffect(() => {
         "The image could not be modified.",
         "warning"
       );
-      console.log(e);
     }
     setProcessing(0);
   };

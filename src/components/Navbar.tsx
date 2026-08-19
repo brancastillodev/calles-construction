@@ -31,8 +31,8 @@ function Navbar({ open, setOpen }: { open: boolean; setOpen: (state: boolean) =>
         if (resp.data.length > 0) {
           setLogo(resp.data[resp.data.length - 1]);
         }
-      } catch (e) {
-        console.log(e);
+      } catch {
+        /* keep default logo on failure */
       }
     };
 
@@ -63,7 +63,6 @@ useEffect(() => {
       setEstado(!estado);
       alerts("Okey!", "Logo updated successfuly", "success");
     } catch (e) {
-      console.log("error de cliente", e);
       alerts("Sorry!", "Logo couldn't be updated, try again", "danger");
     }
 

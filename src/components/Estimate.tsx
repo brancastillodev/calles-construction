@@ -51,7 +51,6 @@ function Estimate() {
       }
     } catch (e) {
       alerts("Sorry!", "Please contact me in another way!", "warning");
-      console.log(e);
     }
     setSending(false);
   };

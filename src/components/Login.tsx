@@ -43,8 +43,7 @@ function Login() {
         navigate(from || "/admin", { replace: true });
         setLoading(false);
       })
-      .catch((err) => {
-        console.log(err);
+      .catch(() => {
         alerts("Sorry!", "Email or password are not correct!", "warning");
         setLoading(false);
       });
