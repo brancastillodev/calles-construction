@@ -413,7 +413,7 @@ useEffect(() => {
                 </div>
 
                 {loading ? (
-                  <div style={{ margin: "0 auto" }}>
+                  <div className="job-loading">
                     <ReactLoading
                       type={"spin"}
                       color="#0f4c61"
