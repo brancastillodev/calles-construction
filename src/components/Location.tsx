@@ -15,10 +15,10 @@ function Location() {
         rel="noopener noreferrer"
       >
         <span className="maps-text">Orchard Dr, Clifton, New Jersey</span>
-        <figure className="google-maps">
-          <img src={map} alt="google-maps" />
-        </figure>
       </a>
+      <figure className="google-maps">
+        <img src={map} alt="google-maps" />
+      </figure>
     </section>
   );
 }
