@@ -83,7 +83,8 @@ function Jobs({ serv }: { serv?: string }) {
       })
       .catch((err: unknown) => {
         console.log(err);
-        setLoading2(true);
+        setLoading2(false);
+        alerts("Connection Error", "Could not load jobs, try again", "danger");
       });
   }, [estado]);
 

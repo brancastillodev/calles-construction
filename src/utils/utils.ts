@@ -1,5 +1,7 @@
 import axios from "axios";
 import { getToken, clearSession } from "./auth";
+import store from "../state/store";
+import { setUser } from "../state/userState";
 
 export const apiSegura = axios.create({
   timeout: 10000,
@@ -26,6 +28,7 @@ apiSegura.interceptors.response.use(
       isBackendCall(error.config?.url)
     ) {
       clearSession();
+      store.dispatch(setUser({ id: null, email: null }));
     }
     throw error;
   }

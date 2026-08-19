@@ -132,7 +132,7 @@ function Job({
                   updateData(service.id, {
                     title,
                     description: desc,
-                    date: service.date,
+                    date: dat,
                   })
                 }
                 title="Update Job"

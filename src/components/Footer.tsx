@@ -34,7 +34,7 @@ export default function Footer() {
           </div>
           <div className="line">
             <img src={two} />
-            <a href="tel:347242525">
+            <a href="tel:3476242525">
               <p>3476242525</p>
             </a>
           </div>

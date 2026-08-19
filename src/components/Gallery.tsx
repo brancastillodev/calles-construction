@@ -48,7 +48,11 @@ function Gallery() {
         setGallery(resp.data);
         setLoading2(false);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        setLoading2(false);
+        alerts("Connection Error", "Could not load images, try again", "danger");
+      });
   }, [estado]);
 
   useEffect(() => {
@@ -78,7 +82,7 @@ function Gallery() {
         console.log(allImages[i]);
         const link = await uploadImages(allImages[i]);
         console.log(link);
-        await imagesDb(link, category, 848484);
+        await imagesDb(link, category, 0);
       }
 
       setAllImages([]);
