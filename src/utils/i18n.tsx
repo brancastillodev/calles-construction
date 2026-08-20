@@ -14,6 +14,7 @@ const translations: Record<Lang, Dict> = {
     "nav.home": "Inicio",
     "footer.contact": "Contacto",
     "footer.admin": "Modo Admin",
+    "footer.sell": "¿Querés tu propio sitio?",
     "home.title": "Precisión y calidad en cada obra",
     "home.subtitle":
       "Durlock, pintura, electricidad, carpintería, plomería y servicios generales para tu hogar o negocio.",
@@ -126,6 +127,24 @@ const translations: Record<Lang, Dict> = {
     "register.error": "Error",
     "register.errorMsg":
       "No pudimos crear el sitio. Probá con otro nombre de dirección.",
+    "landing.title": "Do you build? Get your online portfolio in minutes",
+    "landing.subtitle":
+      "Your own site with all your jobs, photos and contact info. Update it yourself, no tech skills needed. Ready to show every client who asks “do you have photos of your work?”.",
+    "landing.ctaPrimary": "Create your site",
+    "landing.ctaDemo": "Ask me for a demo on WhatsApp",
+    "landing.f1Title": "All your work in one place",
+    "landing.f1Desc":
+      "Upload photos of your jobs with categories: drywall, painting, electrical and more. Your professional portfolio always at hand.",
+    "landing.f2Title": "With your own brand",
+    "landing.f2Desc":
+      "Your logo, your colors, your phone and email. A site that looks like yours, not someone else's.",
+    "landing.f3Title": "No hassle",
+    "landing.f3Desc":
+      "If you can send a photo on WhatsApp, you can update your site. We set you up and load your first jobs for you.",
+    "landing.priceTitle": "Simple plan",
+    "landing.priceValue": "Setup + monthly fee",
+    "landing.priceDetail":
+      "We load your first jobs as a welcome gift. No lock-in, cancel anytime.",
     "alerts.cancel": "¿Seguro que querés borrar esto?",
     "jobs.imageN": "Imagen",
   },
@@ -137,6 +156,7 @@ const translations: Record<Lang, Dict> = {
     "nav.home": "Home",
     "footer.contact": "Contact",
     "footer.admin": "Admin Mode",
+    "footer.sell": "Want your own site?",
     "home.title": "Precision and quality in every project",
     "home.subtitle":
       "Drywall, painting, electrical, carpentry, plumbing and general utilities for your home or business.",
@@ -249,6 +269,24 @@ const translations: Record<Lang, Dict> = {
     "register.error": "Error",
     "register.errorMsg":
       "We couldn't create the site. Try a different address.",
+    "landing.title": "¿Construís? Tené tu porfolio online en minutos",
+    "landing.subtitle":
+      "Un sitio propio con todos tus trabajos, fotos y contacto. Lo actualizás vos mismo, sin saber de tecnología. Listo para mostrarle a cada cliente que te pregunta “¿tenés fotos de obras?”.",
+    "landing.ctaPrimary": "Creá tu sitio",
+    "landing.ctaDemo": "Pedime una demo por WhatsApp",
+    "landing.f1Title": "Todos tus trabajos en un mismo lugar",
+    "landing.f1Desc":
+      "Subí fotos de tus obras con categorías: durlock, pintura, electricidad y más. Tu portafolio profesional siempre a mano.",
+    "landing.f2Title": "Con tu marca",
+    "landing.f2Desc":
+      "Tu logo, tus colores, tu teléfono y tu email. Un sitio que se ve como tuyo, no como de otro.",
+    "landing.f3Title": "Sin complicaciones",
+    "landing.f3Desc":
+      "Si sabés mandar una foto por WhatsApp, sabés actualizar tu sitio. Te damos de alta y cargamos tus primeros trabajos nosotros.",
+    "landing.priceTitle": "Plan simple",
+    "landing.priceValue": "Setup + mensualidad",
+    "landing.priceDetail":
+      "Te cargo tus primeras obras como regalo de bienvenida. Sin permanencia, cancelás cuando quieras.",
     "alerts.cancel": "Are you sure you want to delete this job?",
     "jobs.imageN": "Image",
   },

@@ -7,6 +7,7 @@ export const RESERVED_SEGMENTS = [
   "login",
   "admin",
   "register",
+  "landing",
 ];
 
 let prefix = "";

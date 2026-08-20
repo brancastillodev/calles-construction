@@ -78,6 +78,8 @@ export default function Footer() {
                   Logout
                 </button>
               )}
+              {" · "}
+              <Link to={tlink("/landing")}>{t("footer.sell")}</Link>
             </p>
           </div>
         </div>

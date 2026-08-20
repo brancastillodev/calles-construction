@@ -1,0 +1,75 @@
+#landing.landing
+  max-width: 1000px
+  margin: 0 auto
+  padding: 3rem 1.5rem
+  text-align: center
+  gap: 2.5rem
+
+.landing-hero
+  h1
+    font-family: graduate
+    font-size: 2.4rem
+    color: var(--principal)
+    margin-bottom: 0.8rem
+  p
+    font-size: 1.15rem
+    max-width: 620px
+    margin: 0 auto
+
+.landing-cta
+  display: flex
+  gap: 1rem
+  justify-content: center
+  flex-wrap: wrap
+  margin-top: 1.6rem
+  a
+    text-decoration: none
+
+.button-secondary
+  background-color: var(--secundario)
+
+.landing-features
+  display: flex
+  gap: 1.2rem
+  justify-content: center
+  flex-wrap: wrap
+
+.landing-card
+  background-color: #faf7f0
+  border-radius: 0.6rem
+  border: 2px solid var(--principal)
+  padding: 1.4rem 1.2rem
+  width: 260px
+  h3
+    font-size: 1.25rem
+    color: var(--principal)
+    margin-bottom: 0.5rem
+  p
+    font-size: 0.95rem
+
+.landing-price
+  background-color: #faf7f0
+  border-radius: 0.6rem
+  border: 2px solid var(--secundario)
+  padding: 2rem
+  max-width: 420px
+  margin: 0 auto
+  h2
+    font-size: 1.5rem
+    color: var(--principal)
+  .landing-price-value
+    font-size: 2rem
+    font-weight: 700
+    color: var(--secundario)
+    margin: 0.6rem 0
+  a
+    display: inline-block
+    margin-top: 1.2rem
+    text-decoration: none
+
+@media (min-width: 800px)
+  #landing.landing
+    padding: 4rem 2rem
+  .landing-hero
+    h1
+      font-size: 3.2rem

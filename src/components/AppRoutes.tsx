@@ -9,6 +9,7 @@ import Services from "./Services";
 import Location from "./Location";
 import Login from "./Login";
 import Register from "./Register";
+import Landing from "./Landing";
 import AdminPanel from "./AdminPanel";
 import RequireAuth from "../commons/RequireAuth";
 import { parseSlug, setCurrentSlug } from "../utils/tenant";
@@ -95,6 +96,7 @@ function AppRoutes() {
       />
       <Route path={`${prefix}/location`} element={<Location />} />
       <Route path={`${prefix}/login`} element={<Login />} />
+      <Route path={`${prefix}/landing`} element={<Landing />} />
       <Route path={`${prefix}/register`} element={<Register />} />
       <Route
         path={`${prefix}/admin`}
