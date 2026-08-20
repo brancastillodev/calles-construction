@@ -3,11 +3,20 @@ import { getToken, clearSession } from "./auth";
 import store from "../state/store";
 import { setUser } from "../state/userState";
 import { API_URL } from "./api";
+import { getCurrentSlug } from "./tenant";
 
 export const apiSegura = axios.create({
   timeout: 10000,
   maxContentLength: 50 * 1024 * 1024,
   maxBodyLength: 50 * 1024 * 1024,
+});
+
+apiSegura.interceptors.request.use((config) => {
+  const slug = getCurrentSlug();
+  if (slug) {
+    config.headers["x-tenant-slug"] = slug;
+  }
+  return config;
 });
 
 const isBackendCall = (url?: string): boolean =>

@@ -1,3 +1,5 @@
+import { useLang } from "../utils/i18n";
+
 interface ServiceElement {
   id?: number;
   title: string;
@@ -16,6 +18,9 @@ interface ServiceProps {
 }
 
 function Service({ element, getTitle }: ServiceProps) {
+  const { t } = useLang();
+  const key = `services.${element.title.toLowerCase()}`;
+
   return (
     <div className="service">
       <figure>
@@ -23,17 +28,17 @@ function Service({ element, getTitle }: ServiceProps) {
       </figure>
       <a
         tabIndex={0}
-        onClick={() => getTitle(element.title)}
+        onClick={() => getTitle(element.category)}
         onKeyDown={(e) => {
           if (e.key === "Enter" || e.key === " ") {
             e.preventDefault();
-            getTitle(element.title);
+            getTitle(element.category);
           }
         }}
       >
-        {element.title}
+        {t(key)}
       </a>
-      <p>{element.desc}</p>
+      <p>{t(`${key}Desc`)}</p>
     </div>
   );
 }

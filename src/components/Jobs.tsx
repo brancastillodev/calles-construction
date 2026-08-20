@@ -16,6 +16,7 @@ import minus from "../assets/minus.svg";
 import { uploadImages, imagesDb } from "../utils/utils";
 import { apiSegura } from "../utils/utils";
 import { API_URL } from "../utils/api";
+import { useLang } from "../utils/i18n";
 
 interface JobsData {
   id: number | string;
@@ -29,6 +30,7 @@ interface JobsData {
 
 function Jobs({ serv }: { serv?: string }) {
   const user = useSelector((state: { user: { id?: string } }) => state.user);
+  const { t } = useLang();
   const [jobs, setJobs] = useState<JobsData[]>([]);
   const [rubro, setRubro] = useState<string>(serv || "Drywall");
   const [finalJobs, setFinalJobs] = useState<JobsData[]>([]);
@@ -53,37 +55,45 @@ function Jobs({ serv }: { serv?: string }) {
 
   //get all jobs
   useEffect(() => {
+    let cancelled = false;
+    setLoading2(true);
+
     apiSegura
       .get(`${API_URL}/api/jobs`)
-      .then((resp) => {
+      .then(async (resp) => {
         const jobsData: JobsData[] = resp.data;
-        
-        setLoading2(true);
 
-        // Crear array de promesas
-        const jobsWithImagesPromises = jobsData.map(async (job: JobsData) => {
-          const jid = job.id;
-          const imagesResp = await apiSegura.get(
-            `${API_URL}/api/images/job/${jid}`
-          );
-          return { ...job, images: imagesResp.data };
-        });
-
-        // Esperar a que TODAS las promesas se resuelvan
-        Promise.all(jobsWithImagesPromises)
-          .then((finalJobs: JobsData[]) => {
-            setJobs(finalJobs);
-            setLoading2(false);
+        const results = await Promise.allSettled(
+          jobsData.map(async (job: JobsData) => {
+            try {
+              const imagesResp = await apiSegura.get(
+                `${API_URL}/api/images/job/${job.id}`
+              );
+              return { ...job, images: imagesResp.data };
+            } catch {
+              return { ...job, images: [] };
+            }
           })
-          .catch(() => {
-            setLoading2(false);
-          });
+        );
 
+        if (cancelled) return;
+
+        setJobs(
+          results.flatMap((r) =>
+            r.status === "fulfilled" && r.value ? [r.value] : []
+          )
+        );
+        setLoading2(false);
       })
       .catch(() => {
+        if (cancelled) return;
         setLoading2(false);
-        alerts("Connection Error", "Could not load jobs, try again", "danger");
+        alerts(t("jobs.connection"), t("jobs.connectionMsg"), "danger");
       });
+
+    return () => {
+      cancelled = true;
+    };
   }, [estado]);
 
   //filtrar
@@ -128,11 +138,7 @@ function Jobs({ serv }: { serv?: string }) {
       }
 
       setEstado(!estado);
-      alerts(
-        "Job Uploaded",
-        "The job have been uploaded successfully.",
-        "success"
-      );
+      alerts(t("jobs.uploaded"), t("jobs.uploadedMsg"), "success");
       setMore(false);
       setMoreImages(1);
       setTitle("");
@@ -140,7 +146,7 @@ function Jobs({ serv }: { serv?: string }) {
       setDate("");
       setAllImages([]);
     } catch (e: unknown) {
-      alerts("Upload Error", "The job could not be uploaded.", "warning");
+      alerts(t("jobs.uploadError"), t("jobs.uploadErrorMsg"), "warning");
     }
 
     setLoading(false);
@@ -161,13 +167,9 @@ function Jobs({ serv }: { serv?: string }) {
       );
 
       setEstado(!estado);
-      alerts(
-        "Job Deleted",
-        "The job has been deleted successfully.",
-        "success"
-      );
+      alerts(t("jobs.deleted"), t("jobs.deletedMsg"), "success");
     } catch (e: unknown) {
-      alerts("Deletion Error", "The job could not be deleted.", "warning");
+      alerts(t("jobs.deleteError"), t("jobs.deleteErrorMsg"), "warning");
     }
     setProcessing(0);
   };
@@ -185,13 +187,9 @@ function Jobs({ serv }: { serv?: string }) {
       );
 
       setEstado(!estado);
-      alerts(
-        "Job Modified",
-        "The job has been modified successfully.",
-        "success"
-      );
+      alerts(t("jobs.modified"), t("jobs.modifiedMsg"), "success");
     } catch (e: unknown) {
-      alerts("Modification Error", "The job could not be modified.", "warning");
+      alerts(t("jobs.modifyError"), t("jobs.modifyErrorMsg"), "warning");
     }
     setProcessing(0);
   };
@@ -224,24 +222,16 @@ useEffect(() => {
       );
 
       setEstado(!estado);
-      alerts(
-        "Image Modified",
-        "The image has been modified successfully.",
-        "success"
-      );
+      alerts(t("jobs.imageModified"), t("jobs.imageModifiedMsg"), "success");
     } catch (e: unknown) {
-      alerts(
-        "Modification Error",
-        "The image could not be modified.",
-        "warning"
-      );
+      alerts(t("jobs.imageError"), t("jobs.imageErrorMsg"), "warning");
     }
     setProcessing(0);
   };
 
   return (
     <section id="jobs" className="home">
-      <h2>Jobs</h2>
+      <h2>{t("nav.jobs")}</h2>
       <figure className="jobs-img">
         <img src={portadaJobs} alt="jobs-img" />
       </figure>
@@ -251,15 +241,15 @@ useEffect(() => {
       <p
         style={{
           fontWeight: "600",
-          color: "#0f4c61",
+          color: "var(--principal)",
         }}
         className="category-title"
       >
-        Select a category
+        {t("jobs.select")}
       </p>
 
       <div className="botonera">
-        {["Drywall", "Painting", "Electrical", "Carpentry", "Plumbing", "Utilities"].map(
+        {["drywall", "painting", "electrical", "carpentry", "plumbing", "utilities"].map(
           (cat) => (
             <a
               key={cat}
@@ -272,19 +262,19 @@ useEffect(() => {
                 }
               }}
             >
-              {cat}
+              {t(`services.${cat}`)}
             </a>
           )
         )}
       </div>
 
-      {rubro && <h2 className="rubro-title">{rubro}</h2>}
+      {rubro && <h2 className="rubro-title">{t(`services.${rubro.toLowerCase()}`)}</h2>}
        
       {loading2 ? (
          <div style={{ margin: "0 auto" }}>
             <ReactLoading
               type={"spin"}
-              color="#0f4c61"
+              color="var(--principal)"
               height={50}
               width={50}
             />
@@ -314,7 +304,7 @@ useEffect(() => {
             <div className="form-job">
               <form onSubmit={createJobs}>
                 <div className="field">
-                  <label htmlFor="title">Title</label>
+                  <label htmlFor="title">{t("jobs.title")}</label>
                   <input
                     id="title"
                     type="text"
@@ -326,7 +316,7 @@ useEffect(() => {
                   />
                 </div>
                 <div className="field">
-                  <label htmlFor="date">Date</label>
+                  <label htmlFor="date">{t("jobs.date")}</label>
                   <input
                     id="date"
                     type="date"
@@ -336,7 +326,7 @@ useEffect(() => {
                   />
                 </div>
                 <div className="field">
-                  <label htmlFor="desc">Description</label>
+                  <label htmlFor="desc">{t("jobs.description")}</label>
                   <textarea
                     id="desc"
                     onChange={(e) => setDesc(e.target.value)}
@@ -348,26 +338,26 @@ useEffect(() => {
                   />
                 </div>
                 <div className="field">
-                  <label htmlFor="cat">Category</label>
+                  <label htmlFor="cat">{t("jobs.category")}</label>
                   <select
                     id="cat"
                     onChange={(e) => setCategory(e.target.value)}
                     value={category}
                     required
                   >
-                    <option value="">Select a category</option>
-                    <option value="drywall">Drywall</option>
-                    <option value="painting">Painting</option>
-                    <option value="electrical">Electrical</option>
-                    <option value="carpentry">Carpentry</option>
-                    <option value="plumbing">Plumbing</option>
-                    <option value="utilities">Utilities</option>
+                    <option value="">{t("jobs.select")}</option>
+                    <option value="drywall">{t("services.drywall")}</option>
+                    <option value="painting">{t("services.painting")}</option>
+                    <option value="electrical">{t("services.electrical")}</option>
+                    <option value="carpentry">{t("services.carpentry")}</option>
+                    <option value="plumbing">{t("services.plumbing")}</option>
+                    <option value="utilities">{t("services.utilities")}</option>
                   </select>
                 </div>
 
                 {divs.map((_, index) => (
                   <div key={index} className="field">
-                    <label htmlFor="image">Image {index + 1}</label>
+                    <label htmlFor="image">{t("jobs.imageN")} {index + 1}</label>
                     <input
                       id="image"
                       type="file"
@@ -416,13 +406,13 @@ useEffect(() => {
                   <div className="job-loading">
                     <ReactLoading
                       type={"spin"}
-                      color="#0f4c61"
+                      color="var(--principal)"
                       height={50}
                       width={50}
                     />
                   </div>
                 ) : (
-                  <button type="submit">Send</button>
+                  <button type="submit">{t("jobs.send")}</button>
                 )}
               </form>
             </div>

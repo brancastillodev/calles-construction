@@ -2,8 +2,10 @@ import { useState } from "react";
 import emailjs from "emailjs-com";
 import { alerts } from "../utils/alerts";
 import ReactLoading from "react-loading";
+import { useLang } from "../utils/i18n";
 
 function Estimate() {
+  const { t } = useLang();
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [number, setNumber] = useState<string>("");
@@ -35,11 +37,7 @@ function Estimate() {
       );
 
       if (res) {
-        alerts(
-          "Thanks!",
-          "You will get a response as soon as posible!",
-          "success"
-        );
+        alerts(t("estimate.thanks"), t("estimate.thanksMsg"), "success");
 
         setNumber("");
         setEmail("");
@@ -57,11 +55,11 @@ function Estimate() {
 
   return (
     <section id="estimate" className="estimate-compo home">
-      <h2>Ask me</h2>
+      <h2>{t("estimate.title")}</h2>
 
       <form onSubmit={handleForm}>
         <div className="field">
-          <label htmlFor="name">Your Name</label>
+          <label htmlFor="name">{t("estimate.name")}</label>
           <input
             id="name"
             name="name"
@@ -73,7 +71,7 @@ function Estimate() {
           />
         </div>
         <div className="field">
-          <label htmlFor="email">Your Email</label>
+          <label htmlFor="email">{t("estimate.email")}</label>
           <input
             id="email"
             name="email"
@@ -85,7 +83,7 @@ function Estimate() {
           />
         </div>
         <div className="field">
-          <label htmlFor="number">Your Number</label>
+          <label htmlFor="number">{t("estimate.phone")}</label>
           <input
             id="number"
             name="number"
@@ -98,7 +96,7 @@ function Estimate() {
           />
         </div>
         <div className="field">
-          <label htmlFor="message">Your Message</label>
+          <label htmlFor="message">{t("estimate.message")}</label>
           <textarea
             id="message"
             name="message"
@@ -114,13 +112,13 @@ function Estimate() {
             <div style={{ margin: "0 auto" }}>
               <ReactLoading
                 type="spin"
-                color="#0f4c61"
+                color="var(--principal)"
                 height={50}
                 width={50}
               />
             </div>
           ) : (
-            <button type="submit">Get Estimate</button>
+            <button type="submit">{t("home.estimate")}</button>
           )}
         </div>
       </form>

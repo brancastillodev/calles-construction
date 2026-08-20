@@ -3,6 +3,7 @@ import trash from "../assets/trash.svg";
 import edit from "../assets/edit.svg";
 import { useSelector } from "react-redux";
 import ReactLoading from "react-loading";
+import { useLang } from "../utils/i18n";
 
 interface ServiceData {
   id: number | string;
@@ -35,6 +36,7 @@ function Job({
   processing,
 }: JobProps) {
   const user = useSelector((state: { user: { id?: string } }) => state.user);
+  const { t } = useLang();
   const [editMode, setEditMode] = useState(false);
   const [desc, setDesc] = useState(service.description);
   const [title, setTitle] = useState(service.title);
@@ -92,14 +94,14 @@ function Job({
               <figure
                 onClick={() => setEditMode(!editMode)}
                 className="job-button"
-                title="Enter Edit Mode"
+                title={t("jobs.exitEdit")}
               >
                 <img src={edit} alt="edit-icon" />
               </figure>
               <figure
                 onClick={() => deleteFun(service.id)}
                 className="job-button"
-                title="Delete Job"
+                title={t("jobs.deleteJob")}
               >
                 <img src={trash} alt="trash-icon" />
               </figure>
@@ -133,28 +135,28 @@ function Job({
                     date: dat,
                   })
                 }
-                title="Update Job"
+                title={t("jobs.submit")}
               >
-                Submit
+                {t("jobs.submit")}
               </button>
               <figure
                 onClick={() => setEditMode(!editMode)}
                 className="edit-button"
               >
-                <img src={edit} alt="edit-icon" title="Exit Edit Mode" />
+                <img src={edit} alt="edit-icon" title={t("jobs.exitEdit")} />
               </figure>
               <figure
                 onClick={() => deleteFun(service.id)}
                 className="edit-button"
               >
-                <img src={trash} alt="trash-icon" title="Delete Job" />
+                <img src={trash} alt="trash-icon" title={t("jobs.deleteJob")} />
               </figure>
             </div>
             {processing === service.id && (
               <>
                 <ReactLoading
                   type="spin"
-                  color="#0f4c61"
+                  color="var(--principal)"
                   height={50}
                   width={50}
                 />
@@ -177,7 +179,7 @@ function Job({
               </figure>
               {user.id && editMode && (
                 <button onClick={() => updateImages(image.id, service.id)}>
-                  Edit image
+                  {t("jobs.editImage")}
                 </button>
               )}
             </div>

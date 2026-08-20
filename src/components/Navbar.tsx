@@ -1,80 +1,62 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useRef, useState } from "react";
 import { Squash as Hamburger } from "hamburger-react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import ReactLoading from "react-loading";
 import defaultLogo from "../assets/nav-logo.png";
 import { alerts } from "../utils/alerts";
 import { uploadImages } from "../utils/utils";
 import { apiSegura } from "../utils/utils";
+import { API_URL } from "../utils/api";
+import { tlink } from "../utils/tenant";
+import { useLang } from "../utils/i18n";
+import { setTenantInfo } from "../state/tenantState";
 
-interface Logo {
-  link: string;
-}
-
-function Navbar({ open, setOpen }: { open: boolean; setOpen: (state: boolean) => void }) {
+function Navbar({ open, setOpen }: { open: boolean; setOpen: React.Dispatch<React.SetStateAction<boolean>> }) {
   const user = useSelector((state: { user: { id?: string } }) => state.user);
-  const [logo, setLogo] = useState<Logo>({ link: defaultLogo });
+  const tenant = useSelector((state: { tenant: { logo: string } }) => state.tenant);
+  const dispatch = useDispatch();
+  const { t, lang, toggle: toggleLang } = useLang();
   const [newLogo, setNewLogo] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
-  const [estado, setEstado] = useState(false);
   const imgUpdater = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
-    const getLogo = async () => {
-      try {
-        const resp = await apiSegura.get(
-          `${API_URL}/api/descriptions/`
-        );
-
-        if (resp.data.length > 0) {
-          setLogo(resp.data[resp.data.length - 1]);
-        }
-      } catch {
-        /* keep default logo on failure */
-      }
-    };
-
-    getLogo();
-  }, [estado]);
-
-  const handleNewImage = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNewLogo(e.target.files?.[0] ?? null);
-  };
-
-useEffect(() => {
     if (newLogo) {
       handleChangeImage();
     }
   }, [newLogo]);
 
+  const handleNewImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNewLogo(e.target.files?.[0] ?? null);
+  };
+
   const handleChangeImage = async () => {
+    if (!newLogo) return;
     setLoading(true);
 
     try {
       const link = await uploadImages(newLogo);
 
-      await apiSegura.post(
-        `${API_URL}/api/descriptions/create`,
-        { link }
-      );
+      await apiSegura.post(`${API_URL}/api/descriptions/create`, { link });
 
-      setEstado(!estado);
-      alerts("Okey!", "Logo updated successfuly", "success");
-    } catch (e) {
+      dispatch(setTenantInfo({ logo: link }));
+      alerts("Ok!", "Logo updated successfully", "success");
+    } catch {
       alerts("Sorry!", "Logo couldn't be updated, try again", "danger");
     }
 
     setLoading(false);
+    setNewLogo(null);
   };
 
   return (
     <nav id="navbar">
       <div className="logo-section">
-        <Link to="/">
+        <Link to={tlink("/")}>
           <figure className="nav-logo">
-            {logo.link && <img src={logo.link} alt="calles-logo" />}
+            <img src={tenant.logo || defaultLogo} alt="logo" />
           </figure>
         </Link>
         {user.id && (
@@ -83,14 +65,19 @@ useEffect(() => {
           </button>
         )}
         {loading && (
-          <ReactLoading type="spin" color="#0f4c61" height={30} width={30} />
+          <ReactLoading type="spin" color="var(--principal)" height={30} width={30} />
         )}
       </div>
       <ul className="desktop-navbar">
-        <Link to="/services">Services</Link>
-        <Link to="/jobs">Jobs</Link>
-        <Link to="/gallery">Gallery</Link>
-        <Link to="/location">Location</Link>
+        <Link to={tlink("/services")}>{t("nav.services")}</Link>
+        <Link to={tlink("/jobs")}>{t("nav.jobs")}</Link>
+        <Link to={tlink("/gallery")}>{t("nav.gallery")}</Link>
+        <Link to={tlink("/location")}>{t("nav.location")}</Link>
+        <li>
+          <button className="lang-toggle" onClick={toggleLang} title="Switch language">
+            {lang === "es" ? "EN" : "ES"}
+          </button>
+        </li>
       </ul>
       <div className="hamburger">
         <Hamburger toggled={open} toggle={setOpen} />

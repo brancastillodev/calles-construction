@@ -22,20 +22,41 @@ nav
     padding: 0.4rem
     font-size: 0.75rem
 
+.menu
+  position: relative
+
 .nav-links
   display: none
+  position: absolute
+  top: 0
+  left: 0
+  right: 0
+  background-color: #faf7f0
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15)
   border-top: 1px solid gray
   border-bottom: 1px solid gray
   padding: 1rem
   width: 100%
   justify-content: space-around
   align-items: center
+  z-index: 50
 
 .open
   display: flex
 
 .desktop-navbar
   display: none
+
+.lang-toggle
+  background: none
+  border: 2px solid var(--principal)
+  color: var(--principal)
+  border-radius: 0.3rem
+  font-weight: 600
+  font-size: 0.8rem
+  padding: 0.15rem 0.5rem
+  cursor: pointer
+  font-family: open-sans
 
 @media (min-width: 800px)
   nav

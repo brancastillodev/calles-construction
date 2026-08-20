@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { alerts } from "../utils/alerts";
 import { apiSegura } from "../utils/utils";
 import { API_URL } from "../utils/api";
+import { useLang } from "../utils/i18n";
 import Image from "../commons/Image";
 import lessButton from "../assets/lessButton.svg";
 import moreButton from "../assets/moreButton.svg";
@@ -22,6 +23,7 @@ interface GalleryImage {
 
 function Gallery() {
   const user = useSelector((state: { user: { id?: string } }) => state.user);
+  const { t } = useLang();
   const [gallery, setGallery] = useState<GalleryImage[]>([]);
   const [rubro, setRubro] = useState<string>("Drywall");
   const [finalJobs, setFinalJobs] = useState<GalleryImage[]>([]);
@@ -50,7 +52,7 @@ function Gallery() {
       })
       .catch(() => {
         setLoading2(false);
-        alerts("Connection Error", "Could not load images, try again", "danger");
+        alerts(t("jobs.connection"), t("gallery.connectionMsg"), "danger");
       });
   }, [estado]);
 
@@ -86,13 +88,9 @@ function Gallery() {
       setMore(false);
       setMoreImages(1);
       setEstado(!estado);
-      alerts(
-        "Image Uploaded",
-        "The image(s) have been uploaded successfully.",
-        "success"
-      );
+      alerts(t("gallery.uploaded"), t("gallery.uploadedMsg"), "success");
     } catch (e) {
-      alerts("Upload Error", "The image(s) could not be uploaded.", "warning");
+      alerts(t("gallery.uploadError"), t("gallery.uploadErrorMsg"), "warning");
     }
 
     setLoading(false);
@@ -112,13 +110,9 @@ function Gallery() {
       );
 
       setEstado(!estado);
-      alerts(
-        "Image Deleted",
-        "The image has been deleted successfully.",
-        "success"
-      );
+      alerts(t("gallery.deleted"), t("gallery.deletedMsg"), "success");
     } catch (e) {
-      alerts("Deletion Error", "The image could not be deleted.", "warning");
+      alerts(t("gallery.deleteError"), t("gallery.deleteErrorMsg"), "warning");
     }
     setProcessing(0);
   };
@@ -150,18 +144,10 @@ useEffect(() => {
       );
 
       setEstado(!estado);
-      alerts(
-        "Image Modified",
-        "The image has been modified successfully.",
-        "success"
-      );
+      alerts(t("gallery.modified"), t("gallery.modifiedMsg"), "success");
       setProcessing(0);
     } catch (e) {
-      alerts(
-        "Modification Error",
-        "The image could not be modified.",
-        "warning"
-      );
+      alerts(t("gallery.modifyError"), t("gallery.modifyErrorMsg"), "warning");
       setProcessing(0);
     }
   };
@@ -169,20 +155,20 @@ useEffect(() => {
 
   return (
     <section id="gallery" className="home">
-      <h2>Gallery</h2>
+      <h2>{t("nav.gallery")}</h2>
       <p
         style={{
           fontWeight: "600",
           fontSize: "1.2rem",
           marginBottom: "-0.5rem",
-          color: "#0f4c61",
+          color: "var(--principal)",
         }}
       >
-        Select a category
+        {t("gallery.select")}
       </p>
 
       <div className="botonera">
-        {["Drywall", "Painting", "Electrical", "Carpentry", "Plumbing", "Utilities"].map(
+        {["drywall", "painting", "electrical", "carpentry", "plumbing", "utilities"].map(
           (cat) => (
             <a
               key={cat}
@@ -195,19 +181,19 @@ useEffect(() => {
                 }
               }}
             >
-              {cat}
+              {t(`services.${cat}`)}
             </a>
           )
         )}
       </div>
 
-      {rubro && <h3>{rubro}</h3>}
+      {rubro && <h3>{t(`services.${rubro.toLowerCase()}`)}</h3>}
 
       {loading2 ? (
         <div>
           <ReactLoading
             type="spin"
-            color="#0f4c61"
+            color="var(--principal)"
             height={50}
             width={50}
           />
@@ -234,26 +220,26 @@ useEffect(() => {
             <div className="form-job">
               <form onSubmit={createImage}>
                 <div className="field">
-                  <label htmlFor="cat">Category</label>
+                  <label htmlFor="cat">{t("jobs.category")}</label>
                   <select
                     id="cat"
                     onChange={(e) => setCategory(e.target.value)}
                     value={category}
                     required
                   >
-                    <option value="">Select a category</option>
-                    <option value="drywall">Drywall</option>
-                    <option value="painting">Painting</option>
-                    <option value="electrical">Electrical</option>
-                    <option value="carpentry">Carpentry</option>
-                    <option value="plumbing">Plumbing</option>
-                    <option value="utilities">Utilities</option>
+                    <option value="">{t("jobs.select")}</option>
+                    <option value="drywall">{t("services.drywall")}</option>
+                    <option value="painting">{t("services.painting")}</option>
+                    <option value="electrical">{t("services.electrical")}</option>
+                    <option value="carpentry">{t("services.carpentry")}</option>
+                    <option value="plumbing">{t("services.plumbing")}</option>
+                    <option value="utilities">{t("services.utilities")}</option>
                   </select>
                 </div>
 
                 {divs.map((_, index) => (
                   <div key={index} className="field">
-                    <label htmlFor={`image-${index}`}>Image {index + 1}</label>
+                    <label htmlFor={`image-${index}`}>{t("gallery.image")} {index + 1}</label>
                     <input
                       id={`image-${index}`}
                       type="file"
@@ -299,13 +285,13 @@ useEffect(() => {
                   <div style={{ margin: "0 auto" }}>
                     <ReactLoading
                       type="spin"
-                      color="#0f4c61"
+                      color="var(--principal)"
                       height={50}
                       width={50}
                     />
                   </div>
                 ) : (
-                  <button type="submit">Send</button>
+                  <button type="submit">{t("jobs.send")}</button>
                 )}
               </form>
             </div>

@@ -6,11 +6,14 @@ import { setUser } from "../state/userState";
 import { setToken, setStoredUser } from "../utils/auth";
 import { apiSegura } from "../utils/utils";
 import { API_URL } from "../utils/api";
+import { tlink } from "../utils/tenant";
+import { useLang } from "../utils/i18n";
 import ReactLoading from "react-loading";
 import eyeOpen from "../assets/eye-outline.svg";
 import eyeClose from "../assets/eye-off-outline.svg";
 
 function Login() {
+  const { t } = useLang();
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
@@ -21,7 +24,7 @@ function Login() {
   const [peak, setPeak] = useState<boolean>(false);
 
   if (user.id) {
-    return <Navigate to="/" replace />;
+    return <Navigate to={tlink("/")} replace />;
   }
 
   function handleLogin(e: React.FormEvent<HTMLFormElement>) {
@@ -37,14 +40,14 @@ function Login() {
         setToken(token);
         setStoredUser(user);
         dispatch(setUser(user));
-        alerts("Hello!", `Logged in successfully`, "success");
+        alerts(t("login.hello"), t("login.helloMsg"), "success");
         const from = (location.state as { from?: { pathname: string } })?.from
           ?.pathname;
-        navigate(from || "/admin", { replace: true });
+        navigate(from || tlink("/admin"), { replace: true });
         setLoading(false);
       })
       .catch(() => {
-        alerts("Sorry!", "Email or password are not correct!", "warning");
+        alerts(t("login.wrong"), "", "warning");
         setLoading(false);
       });
   }
@@ -54,7 +57,7 @@ function Login() {
       <h2>Login</h2>
       <form onSubmit={handleLogin}>
         <div className="field">
-          <label htmlFor="email">Email</label>
+          <label htmlFor="email">{t("login.email")}</label>
           <input
             id="email"
             type="email"
@@ -67,7 +70,7 @@ function Login() {
         </div>
         <div className="field">
           <div className="peak-line">
-            <label>Password</label>
+            <label>{t("login.password")}</label>
             <figure onClick={() => setPeak(!peak)}>
               <img src={peak ? eyeClose : eyeOpen}></img>
             </figure>
@@ -85,13 +88,13 @@ function Login() {
           <div style={{ margin: "1rem auto 0 auto" }}>
             <ReactLoading
               type="spin"
-              color="#0f4c61"
+              color="var(--principal)"
               height={50}
               width={50}
             />
           </div>
         ) : (
-          <button type="submit">Send</button>
+          <button type="submit">{t("login.submit")}</button>
         )}
       </form>
     </section>

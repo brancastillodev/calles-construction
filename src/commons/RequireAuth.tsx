@@ -1,5 +1,6 @@
 import { Navigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { tlink } from "../utils/tenant";
 
 function RequireAuth({ children }: { children: JSX.Element }) {
   const user = useSelector(
@@ -8,7 +9,7 @@ function RequireAuth({ children }: { children: JSX.Element }) {
   const location = useLocation();
 
   if (!user.id) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
+    return <Navigate to={tlink("/login")} state={{ from: location }} replace />;
   }
 
   return children;

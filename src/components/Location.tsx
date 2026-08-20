@@ -1,10 +1,13 @@
 import calles from "../assets/new-calles.png";
 import map from "../assets/map.png";
+import { useLang } from "../utils/i18n";
 
 function Location() {
+  const { t } = useLang();
+
   return (
     <section id="location" className="home">
-      <h2>Location</h2>
+      <h2>{t("location.title")}</h2>
       <figure className="map-image">
         <img src={calles} alt="calle-location" />
       </figure>
@@ -14,7 +17,7 @@ function Location() {
         target="_blank"
         rel="noopener noreferrer"
       >
-        <span className="maps-text">Orchard Dr, Clifton, New Jersey</span>
+        <span className="maps-text">{t("location.maps")}</span>
       </a>
       <figure className="google-maps">
         <img src={map} alt="google-maps" />

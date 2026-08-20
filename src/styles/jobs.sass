@@ -6,7 +6,7 @@
   text-align: center
   padding-bottom: 1rem
   > button
-    margin-top: 2.5rem
+    margin-top: 0.5rem
 
 //LA PRIMERA IMAGEN AL PRINCIPIO 
 .jobs-img
@@ -19,7 +19,7 @@
   margin-bottom: -1rem
   h3
     font-size: 1.7rem
-    color: #0f4c61
+    color: var(--principal)
   p
     margin-top: 0.4rem
     font-size: 1.1rem
@@ -85,9 +85,13 @@
 
 .pencil-line
   display: flex
-  align-items: center
+  align-items: flex-end
   gap: 0.2rem
   margin-bottom: -0.3rem
+  width: 100%
+  h3
+    flex: 1
+    min-width: 0
   figure
     cursor: pointer
     width: 1.4rem
@@ -98,7 +102,11 @@
 .job-date
   font-size: 1rem
   font-weight: 750
-  color: #0f4c61
+  color: var(--principal)
+  margin-left: auto
+
+.pencil-line .job-date
+  margin-left: auto
 
 .l
   text-align: left
@@ -106,7 +114,6 @@
 .r
   text-align: right
   justify-content: right
-  flex-direction: row-reverse
 
 .job-images
   display: flex
@@ -132,7 +139,7 @@
   width: 100%
 .input-job:focus,
 .input-job:focus 
-    border: orange  2px solid
+    border: var(--secundario)  2px solid
 
 .edit-buttons
   display: flex
@@ -176,7 +183,7 @@
         font-family: open-sans
       input:focus,
       textarea:focus 
-        border: orange  2px solid
+        border: var(--secundario)  2px solid
 
 .last-row
   display: flex
@@ -235,7 +242,6 @@
   .r
     text-align: center
     justify-content: center
-    flex-direction: row-reverse
   .botonera
     width: 55vw
     margin-bottom: 0
@@ -291,9 +297,16 @@
   .r
     text-align: right
     justify-content: right
-    flex-direction: row
   .jobs-img
     width: 33vw
+  .pencil-line
+    align-items: center
+    h3
+      flex: none
+    p
+      margin: 0 0.5rem
+    .job-date
+      margin-left: 0.5rem
   .job-card
     width: 40vw
     gap: 0.4rem

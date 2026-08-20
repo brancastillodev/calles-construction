@@ -1,4 +1,6 @@
 import { Link } from "react-router-dom";
+import { tlink } from "../utils/tenant";
+import { useLang } from "../utils/i18n";
 
 function Hidden({
   isOpen,
@@ -7,20 +9,22 @@ function Hidden({
   isOpen: boolean;
   onNavigate: () => void;
 }) {
+  const { t } = useLang();
+
   return (
-    <div>
+    <div className="menu">
       <ul className={`nav-links ${isOpen ? "open" : ""}`}>
-        <Link to="/services" onClick={onNavigate}>
-          Services
+        <Link to={tlink("/services")} onClick={onNavigate}>
+          {t("nav.services")}
         </Link>
-        <Link to="/jobs" onClick={onNavigate}>
-          Jobs
+        <Link to={tlink("/jobs")} onClick={onNavigate}>
+          {t("nav.jobs")}
         </Link>
-        <Link to="/gallery" onClick={onNavigate}>
-          Gallery
+        <Link to={tlink("/gallery")} onClick={onNavigate}>
+          {t("nav.gallery")}
         </Link>
-        <Link to="/location" onClick={onNavigate}>
-          Location
+        <Link to={tlink("/location")} onClick={onNavigate}>
+          {t("nav.location")}
         </Link>
       </ul>
     </div>

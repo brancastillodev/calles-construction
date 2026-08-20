@@ -1,4 +1,5 @@
 import { useSelector } from "react-redux";
+import { useLang } from "../utils/i18n";
 import trash from "../assets/trash.svg";
 import ReactLoading from "react-loading";
 
@@ -16,6 +17,7 @@ interface ImageProps {
 }
 
 function Image({ image, handleDelete, handleUpdate, processing }: ImageProps) {
+  const { t } = useLang();
   const user = useSelector((state: { user: { id?: string } }) => state.user);
 
   return (
@@ -26,7 +28,7 @@ function Image({ image, handleDelete, handleUpdate, processing }: ImageProps) {
         </figure>
         {user.id && (
           <div className="gallery-edit-button">
-            <button onClick={() => handleUpdate(image.id)}>Edit image</button>
+            <button onClick={() => handleUpdate(image.id)}>{t("jobs.editImage")}</button>
             <figure
               onClick={() => {
                 handleDelete(image.id);
@@ -39,7 +41,7 @@ function Image({ image, handleDelete, handleUpdate, processing }: ImageProps) {
         {processing == image.id && (
           <ReactLoading
             type="spin"
-            color="#0f4c61"
+            color="var(--principal)"
             height={50}
             width={50}
           />

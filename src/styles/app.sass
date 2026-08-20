@@ -8,6 +8,10 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Bowlby+One+SC&display=swap')
 
+:root
+  --principal: #0f4c61
+  --secundario: #d96f32
+
 $admin : #b62aee
 
 @import "./navbar"
@@ -36,7 +40,7 @@ a
   color: inherit
 
 a:hover, a:active
-  color: orange
+  color: var(--secundario)
 
 //css preferences --------------
 html 
@@ -62,7 +66,7 @@ h1
   
 h2 
   font-size: 1.9rem
-  color: #0f4c61
+  color: var(--principal)
 
 button
   cursor: pointer
@@ -75,7 +79,7 @@ button
   border: none
 
 button:active, button:hover
-  color: orange
+  color: var(--secundario)
 
 .admin-badge
   color: $admin
