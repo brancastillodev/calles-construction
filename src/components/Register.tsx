@@ -5,6 +5,12 @@ import { apiSegura } from "../utils/utils";
 import { API_URL } from "../utils/api";
 import { useLang } from "../utils/i18n";
 
+// Página de alta de clientes (autoservicio):
+// 1. El cliente completa el formulario con su negocio.
+// 2. Se crea su tenant (slug = su URL pública, ej. /pedroobras) + el admin con su password
+//    vía POST /api/tenant/register (el back valida slug reservados y duplicados).
+// 3. Se lo redirige a su sitio nuevo; desde ahí entra a /login con sus credenciales
+//    y puede cargar sus propios trabajos (jobs/gallery son por tenant).
 function Register() {
   const { t } = useLang();
   const navigate = useNavigate();
@@ -17,6 +23,7 @@ function Register() {
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
+      // Crea el tenant + su admin en el back (sin necesidad de login previo)
       await apiSegura.post(`${API_URL}/api/tenant/register`, {
         nombre,
         slug,
@@ -25,8 +32,10 @@ function Register() {
         password,
       });
       alerts(t("register.done"), t("register.doneMsg"), "success");
+      // Al cliente su sitio le queda en su URL: /<slug> (ahí ya ve su home)
       navigate(`/${slug.toLowerCase()}`);
     } catch (err) {
+      // Slugs reservados/duplicados o error del back caen acá
       alerts(t("register.error"), t("register.errorMsg"), "warning");
     }
   };
@@ -48,6 +57,8 @@ function Register() {
           />
         </div>
         <div className="field">
+          {/* El slug es la URL pública del sitio (ej. "pedroobras" → /pedroobras).
+              Se valida en vivo: solo minúsculas, números y guiones. */}
           <label htmlFor="reg-slug">{t("register.slug")}</label>
           <input
             id="reg-slug"
