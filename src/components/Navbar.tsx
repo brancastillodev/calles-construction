@@ -73,11 +73,11 @@ function Navbar({ open, setOpen }: { open: boolean; setOpen: React.Dispatch<Reac
         <Link to={tlink("/jobs")}>{t("nav.jobs")}</Link>
         <Link to={tlink("/gallery")}>{t("nav.gallery")}</Link>
         <Link to={tlink("/location")}>{t("nav.location")}</Link>
-        <li>
+        {/*<li>
           <button className="lang-toggle" onClick={toggleLang} title="Switch language">
             {lang === "es" ? "EN" : "ES"}
           </button>
-        </li>
+        </li>*/}
       </ul>
       <div className="hamburger">
         <Hamburger toggled={open} toggle={setOpen} />
