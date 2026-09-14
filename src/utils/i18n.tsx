@@ -1,5 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, ReactNode } from "react";
 
 export type Lang = "es" | "en";
 
@@ -269,24 +269,24 @@ const translations: Record<Lang, Dict> = {
     "register.error": "Error",
     "register.errorMsg":
       "We couldn't create the site. Try a different address.",
-    "landing.title": "¿Construís? Tené tu porfolio online en minutos",
+    "landing.title": "Do you build? Get your online portfolio in minutes",
     "landing.subtitle":
-      "Un sitio propio con todos tus trabajos, fotos y contacto. Lo actualizás vos mismo, sin saber de tecnología. Listo para mostrarle a cada cliente que te pregunta “¿tenés fotos de obras?”.",
-    "landing.ctaPrimary": "Creá tu sitio",
-    "landing.ctaDemo": "Pedime una demo por WhatsApp",
-    "landing.f1Title": "Todos tus trabajos en un mismo lugar",
+      "Your own site with all your jobs, photos and contact info. Update it yourself, no tech skills needed. Ready to show every client who asks “do you have photos of your work?”.",
+    "landing.ctaPrimary": "Create your site",
+    "landing.ctaDemo": "Ask me for a demo on WhatsApp",
+    "landing.f1Title": "All your work in one place",
     "landing.f1Desc":
-      "Subí fotos de tus obras con categorías: durlock, pintura, electricidad y más. Tu portafolio profesional siempre a mano.",
-    "landing.f2Title": "Con tu marca",
+      "Upload photos of your jobs with categories: drywall, painting, electrical and more. Your professional portfolio always at hand.",
+    "landing.f2Title": "With your own brand",
     "landing.f2Desc":
-      "Tu logo, tus colores, tu teléfono y tu email. Un sitio que se ve como tuyo, no como de otro.",
-    "landing.f3Title": "Sin complicaciones",
+      "Your logo, your colors, your phone and email. A site that looks like yours, not someone else's.",
+    "landing.f3Title": "No hassle",
     "landing.f3Desc":
-      "Si sabés mandar una foto por WhatsApp, sabés actualizar tu sitio. Te damos de alta y cargamos tus primeros trabajos nosotros.",
-    "landing.priceTitle": "Plan simple",
-    "landing.priceValue": "Setup + mensualidad",
+      "If you can send a photo on WhatsApp, you can update your site. We set you up and load your first jobs for you.",
+    "landing.priceTitle": "Simple plan",
+    "landing.priceValue": "Setup + monthly fee",
     "landing.priceDetail":
-      "Te cargo tus primeras obras como regalo de bienvenida. Sin permanencia, cancelás cuando quieras.",
+      "We load your first jobs as a welcome gift. No lock-in, cancel anytime.",
     "alerts.cancel": "Are you sure you want to delete this job?",
     "jobs.imageN": "Image",
   },
@@ -300,21 +300,12 @@ interface LangContextValue {
 
 const LangContext = createContext<LangContextValue | undefined>(undefined);
 
-const STORAGE_KEY = "calles_lang";
-
 export function LangProvider({ children }: { children: ReactNode }) {
-  const [lang, setLang] = useState<Lang>(() => {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    return stored === "en" ? "en" : "es";
-  });
+  const lang: Lang = "en";
 
   const value: LangContextValue = {
     lang,
-    toggle: () => {
-      const next: Lang = lang === "es" ? "en" : "es";
-      setLang(next);
-      localStorage.setItem(STORAGE_KEY, next);
-    },
+    toggle: () => undefined,
     t: (key: string) => translations[lang][key] ?? key,
   };
 

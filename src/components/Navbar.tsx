@@ -17,7 +17,7 @@ function Navbar({ open, setOpen }: { open: boolean; setOpen: React.Dispatch<Reac
   const user = useSelector((state: { user: { id?: string } }) => state.user);
   const tenant = useSelector((state: { tenant: { logo: string } }) => state.tenant);
   const dispatch = useDispatch();
-  const { t, lang, toggle: toggleLang } = useLang();
+  const { t } = useLang();
   const [newLogo, setNewLogo] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const imgUpdater = useRef<HTMLInputElement | null>(null);
